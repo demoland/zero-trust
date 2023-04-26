@@ -5,6 +5,7 @@
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
 #
+set -x # Uncomment to Debug
 
 VAULT_VERSION=1.13.0
 
@@ -17,9 +18,10 @@ curl -fsSL -o /tmp/vault.zip "https://releases.hashicorp.com/vault/${VAULT_VERSI
 unzip -o -d /usr/local/bin/ /tmp/vault.zip
 
 git clone https://github.com/demoland/zero-trust.git
-cp zero-trust/01-initial-setup/vault.service /etc/systemd/system/vault.service
+cp zero-trust/assets/services/vault.service /etc/systemd/system/vault.service
 
 # Start Vault
+systemctl enable vault
 systemctl start vault 
 
 exit 0
