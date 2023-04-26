@@ -1,6 +1,6 @@
 version: "3"
 containers:
-- name: shell
+- name: vault-server
   image: ubuntu
   shell: /bin/bash
   memory: 256
