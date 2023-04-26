@@ -29,8 +29,15 @@ which vault
 vault version
 ```
 
-Check to see if Vault is running.  If not, start Vault.
+Check to see if Vault is running. 
 
 ```bash
-systemctl start vault
+ps -ef |grep vault
+vault status
+```
+
+If not running, the `vault status` command will give you the following error:
+
+```bash
+Error checking seal status: Get "https://127.0.0.1:8200/v1/sys/seal-status": dial tcp 127.0.0.1:8200: connect: connection refused
 ```
