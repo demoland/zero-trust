@@ -1,0 +1,10 @@
+[Unit]
+Description=Vault
+Documentation=https://vaultproject.io/docs/
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/local/bin/vault server -dev -dev-root-token-id=root &
+
+[Install]
+WantedBy=multi-user.target

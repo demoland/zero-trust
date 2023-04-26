@@ -10,12 +10,18 @@ VAULT_VERSION=1.13.0
 
 # Install unzip
 apt-get update
-apt-get install -y unzip git
+apt-get install -y unzip git curl
 
 # Install Vault
 curl -fsSL -o /tmp/vault.zip "https://releases.hashicorp.com/vault/${VAULT_VERSION}+ent/vault_${VAULT_VERSION}+ent_linux_amd64.zip"
 unzip -o -d /usr/local/bin/ /tmp/vault.zip
 
 git clone https://github.com/demoland/zero-trust.git
+
+# Configure Vault startup
+cp zero-trust/assets/services/vault.service /etc/systemd/system/vault.service
+
+# Start Vault
+systemctl enable vault
 
 exit 0

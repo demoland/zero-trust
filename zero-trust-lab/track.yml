@@ -11,8 +11,11 @@ tags: []
 owner: hashicorp
 developers:
 - daniel.fedick@hashicorp.com
+maintenance: true
+show_timer: true
+skipping_enabled: true
 lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "15786647765640786591"
+checksum: "14018652565288834473"

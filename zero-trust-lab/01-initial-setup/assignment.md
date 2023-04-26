@@ -22,9 +22,15 @@ timelimit: 600
 
 ## This is the first line
 
-These are the notes
+Check to see what version of Vault is installed on your system.
 
 ```bash
 which vault
 vault version
+```
+
+Check to see if Vault is running.  If not, start Vault.
+
+```bash
+systemctl start vault
 ```
