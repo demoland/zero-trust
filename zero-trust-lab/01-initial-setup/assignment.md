@@ -41,8 +41,8 @@ export VAULT_TOKEN=root
 vault status
 ```
 
-Check to see if Vault is running once the environment variables are set.
+Check which secrets mounts are enabled
 
 ```bash
-vault status
+vault  secrets list
 ```
