@@ -4,7 +4,7 @@ Documentation=https://vaultproject.io/docs/
 
 [Service]
 TimeoutStartSec=0
-ExecStart=/usr/local/bin/vault server -dev &
+ExecStart=/usr/local/bin/vault server -dev
 
 [Install]
 WantedBy=multi-user.target

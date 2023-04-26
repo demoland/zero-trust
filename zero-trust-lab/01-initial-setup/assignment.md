@@ -31,6 +31,18 @@ Check to see if Vault is running.
 
 ```bash
 ps -ef |grep vault
+```
+
+Set The Environment variables to connect to the local Vault server:
+
+```bash
+export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_TOKEN=root
 vault status
 ```
 
+Check to see if Vault is running once the environment variables are set.
+
+```bash
+vault status
+```
