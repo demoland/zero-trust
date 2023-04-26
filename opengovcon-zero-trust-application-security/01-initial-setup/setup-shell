@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+VAULT_VERSION=1.13.0
+
+# Install unzip
+apt-get update
+apt-get install -y unzip git
+
+# Install Vault
+curl -fsSL -o /tmp/vault.zip "https://releases.hashicorp.com/vault/${VAULT_VERSION}+ent/vault_${VAULT_VERSION}+ent_linux_amd64.zip"
+unzip -o -d /usr/local/bin/ /tmp/vault.zip
+
+git clone https://github.com/demoland/zero-trust.git
+
+exit 0

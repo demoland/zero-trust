@@ -1,0 +1,18 @@
+slug: zero-trust
+id: iyskvrx8g8gf
+title: OpenGovCon - Zero Trust Application Security
+teaser: A short description of the track.
+description: |-
+  A long description of the track.
+
+  You can use any GitHub flavoured markdown.
+icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
+tags: []
+owner: hashicorp
+developers:
+- daniel.fedick@hashicorp.com
+lab_config:
+  overlay: false
+  width: 33
+  position: right
+checksum: "15786647765640786591"
