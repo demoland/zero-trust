@@ -7,15 +7,14 @@ teaser: This first section will be for Setting up the Vault Server
 notes:
 - type: text
   contents: |-
-    In this workshop, we will be setting up a Vault server in development mode to securely manage our sensitive information, such as passwords. The Vault server is a powerful tool designed to provide a centralized location for storing and accessing secrets while maintaining high levels of security and encryption.
+    In this challenge, we will be setting up a Vault server in development mode to securely manage our sensitive information, such as passwords. The Vault server is a powerful tool designed to provide a centralized location for storing and accessing secrets while maintaining high levels of security and encryption.
 
     Development mode allows us to easily explore and experiment with Vault's features without the need for a full production setup. Please note that this mode is not recommended for production environments, as it uses a simplified, in-memory storage system and automatically unseals the Vault.
 
-    During the workshop, we will guide you through the process of installing, configuring, and interacting with the Vault server in development mode. You will learn how to store and retrieve passwords securely, manage access control, and understand the core principles behind Vault's security model. By the end of this workshop, you will have a solid foundation for using Vault to manage your sensitive data in a more secure and efficient manner.
 tabs:
 - title: Shell
   type: terminal
-  hostname: shell
+  hostname: vault-server
 difficulty: basic
 timelimit: 600
 ---
