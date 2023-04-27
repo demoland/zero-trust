@@ -7,14 +7,17 @@
 #
 #set -x # Uncomment to Debug
 
+# Log output to /tmp/build.out
+exec >> /tmp/build.out 2>&1
+
 # Install required packages
-sudo apt-get update
-sudo apt-get install -y unzip wget
+apt-get update
+apt-get install -y unzip wget
 
 # Install Vault
 wget https://releases.hashicorp.com/vault/1.8.4/vault_1.8.4_linux_amd64.zip
 unzip vault_1.8.4_linux_amd64.zip
-sudo mv vault /usr/local/bin/
+mv vault /usr/local/bin/
 
 # Start Vault in dev mode with root token
 vault server -dev -dev-root-token-id=root &
