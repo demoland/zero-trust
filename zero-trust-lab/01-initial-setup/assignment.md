@@ -23,26 +23,38 @@ timelimit: 600
 Check to see what version of Vault is installed on your system.
 
 ```bash
-which vault
 vault version
 ```
 
 Check to see if Vault is running.
 
 ```bash
-ps -ef |grep vault
+vault status
 ```
 
-Set The Environment variables to connect to the local Vault server:
+Check the set Vault variables, used to connect to the local Vault server:
 
 ```bash
-export VAULT_ADDR=http://127.0.0.1:8200
-export VAULT_TOKEN=root
-vault status
+echo $VAULT_ADDR=http://127.0.0.1:8200
+echo $VAULT_TOKEN=root
 ```
 
 Check which secrets mounts are enabled
 
 ```bash
 vault  secrets list
+```
+
+Write static information to the  `secret/info` path on your Vault server:
+
+Write your name and age to the secret/info path: 
+
+```bash
+vault kv put secret/info name="Dan Fedick" age="45"
+```
+
+Retrieve the entered information from the secret/info path:
+
+```bash
+vault kv get secret/info
 ```

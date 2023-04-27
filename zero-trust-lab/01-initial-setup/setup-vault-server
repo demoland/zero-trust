@@ -15,8 +15,9 @@ apt-get update
 apt-get install -y unzip wget
 
 # Install Vault
-wget https://releases.hashicorp.com/vault/1.8.4/vault_1.8.4_linux_amd64.zip
-unzip vault_1.8.4_linux_amd64.zip
+export VAULT_VERSION=1.13.0
+wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
+unzip vault_${VAULT_VERSION}_linux_amd64.zip
 mv vault /usr/local/bin/
 
 # Start Vault in dev mode with root token
