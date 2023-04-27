@@ -47,10 +47,17 @@ vault  secrets list
 
 Write static information to the  `secret/info` path on your Vault server:
 
-Write your name and age to the secret/info path: 
+Set variables for your name and age:
 
 ```bash
-vault kv put secret/info name="Dan Fedick" age="45"
+user="<username>"
+age="<age>"
+```
+
+Write your name and age to the secret/info path:
+
+```bash
+vault kv put secret/info name=${user} age=${age}
 ```
 
 Retrieve the entered information from the secret/info path:

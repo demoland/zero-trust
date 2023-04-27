@@ -6,6 +6,43 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the check script"
+#!/bin/bash
 
+# Check Vault version
+vault_version=$(vault version | awk '{print $2}')
+if [[ "$vault_version" != "1.8.4" ]]; then
+  echo "Vault version is incorrect"
+  exit 1
+fi
+
+# Check Vault status
+vault_status=$(vault status)
+if [[ ! "$vault_status" =~ "Version" ]]; then
+  echo "Vault is not running"
+  exit 1
+fi
+
+# Check VAULT_ADDR and VAULT_TOKEN variables
+if [[ "$VAULT_ADDR" != "http://127.0.0.1:8200" ]]; then
+  echo "VAULT_ADDR variable is incorrect"
+  exit 1
+fi
+if [[ "$VAULT_TOKEN" != "root" ]]; then
+  echo "VAULT_TOKEN variable is incorrect"
+  exit 1
+fi
+
+# Check enabled secrets mounts
+secrets_mounts=$(vault secrets list | awk '{print $1}')
+if [[ ! "$secrets_mounts" =~ "secret/" ]]; then
+  echo "Secrets mount is not enabled"
+  exit 1
+fi
+
+# Check secret/info contents
+info=$(vault kv get secret/info)
+if [[ ! "$info" =~ "name" || ! "$info" =~ "age" ]]; then
+  echo "Secret/info path is incorrect"
+  exit 1
+fi
 exit 0
