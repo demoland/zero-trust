@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+auth_list=$(vault auth list -format=json)
+if [[ $auth_list == *"aws/"* ]]; then
+  echo "AWS auth backend is enabled"
+else
+  echo "AWS auth backend is not enabled"
+  exit 1
+fi
+
+
+exit 0

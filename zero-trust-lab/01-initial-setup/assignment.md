@@ -35,8 +35,8 @@ vault status
 Check the set Vault variables, used to connect to the local Vault server:
 
 ```bash
-echo $VAULT_ADDR=http://127.0.0.1:8200
-echo $VAULT_TOKEN=root
+echo $VAULT_ADDR
+echo $VAULT_TOKEN
 ```
 
 Check which secrets mounts are enabled
@@ -57,7 +57,7 @@ age="<age>"
 Write your name and age to the secret/info path:
 
 ```bash
-vault kv put secret/info name=${user} age=${age}
+vault kv put secret/info name="${user}" age="${age}"
 ```
 
 Retrieve the entered information from the secret/info path:
