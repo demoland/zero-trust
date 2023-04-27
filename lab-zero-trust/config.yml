@@ -4,3 +4,7 @@ containers:
   image: ubuntu
   shell: /bin/bash
   memory: 256
+  environment:
+    VAULT_ADDR: http://vault-server:8200
+aws_accounts:
+- name: awsaccount

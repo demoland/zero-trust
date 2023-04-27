@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform cleanup the challenge.
 #
@@ -6,6 +6,6 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the cleanup script"
+echo "Nothing to cleanup here"
 
 exit 0

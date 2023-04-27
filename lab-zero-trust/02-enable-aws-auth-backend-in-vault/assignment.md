@@ -1,9 +1,11 @@
 ---
 slug: enable-aws-auth-backend-in-vault
+id: kozci6glywpy
 type: challenge
 title: Enable AWS Auth Backend in Vault
-teaser: |-
-  Enable the AWS auth backend in Vault to simplify access control for your applications running on AWS. By mapping AWS IAM principals to Vault roles, you can use existing AWS access keys to authenticate and authorize access to secrets in Vault
+teaser: Enable the AWS auth backend in Vault to simplify access control for your applications
+  running on AWS. By mapping AWS IAM principals to Vault roles, you can use existing
+  AWS access keys to authenticate and authorize access to secrets in Vault
 notes:
 - type: text
   contents: |-
@@ -14,6 +16,10 @@ tabs:
 - title: Shell
   type: terminal
   hostname: vault-server
+- title: Vault UI
+  type: service
+  hostname: vault-server
+  port: 8200
 difficulty: basic
 timelimit: 600
 ---
@@ -23,7 +29,7 @@ First thing we want to do is enable the AWS auth backend in Vault. This will all
 vault auth enable aws
 ```
 
-Next, we need to configure the AWS auth backend. We need to provide the AWS access key ID and secret access key of an IAM user or role that has permission to call the AWS STS GetCallerIdentity API. This is required for Vault to validate the AWS IAM credentials of the IAM principal that is trying to authenticate.
+Next, we need to configure the AWS auth backend. We need to provide the AWS access key ID and secret access key of an IAM user or role that has permission to call the `AWS STS GetCallerIdentity API.` This is required for Vault to validate the AWS IAM credentials of the IAM principal that is trying to authenticate.
 
 ```bash
 vault write auth/aws/config/client \
@@ -40,13 +46,8 @@ vault auth list
 
 Look for `aws/` in the output.
 
-Next, we need to create a role that maps to an AWS IAM principal. This will allow us to authenticate and authorize the IAM principal to access secrets in Vault. We will create a role that maps to an IAM user, but you can also create a role that maps to an IAM role.
+## In the UI
 
-```bash
-vault write auth/aws/role/my-role \
-  auth_type=iam \
-  bound_iam_principal_arn=${AWS_PRINCIPAL_ARN} \
-  policies=my-policy \
-  ttl=1h
-```
+In the **Vault-UI** tab, login to the Vault UI using the root token.  Click on the **Access** tab and then click on **Auth Methods**.  You should see `aws/` in the list of auth methods.
 
+The AWS authentication backend is enabled.  In the next challenge, we'll create a web server and a database that will interact with eachother and depend on Vault for dynamic secrets. We will use the AWS auth backend to authenticate and authorize the web server and database to access secrets in Vault.

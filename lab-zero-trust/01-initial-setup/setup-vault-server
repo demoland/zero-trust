@@ -12,7 +12,7 @@ exec >> /tmp/build.out 2>&1
 
 # Install required packages
 apt-get update
-apt-get install -y unzip wget
+apt-get install -y unzip wget jq
 
 # Install Vault
 export VAULT_VERSION=1.13.0
@@ -21,14 +21,14 @@ unzip vault_${VAULT_VERSION}_linux_amd64.zip
 mv vault /usr/local/bin/
 
 # Start Vault in dev mode with root token
-vault server -dev -dev-root-token-id=root &
+vault server -dev -dev-root-token-id=root -dev-listen-address=vault-server:8200 &
 
 # Set environment variables
-export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_ADDR=http://vault-server:8200
 export VAULT_TOKEN=root
 
 # Make environment variables permanent
-echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
+echo "export VAULT_ADDR=http://vault-server:8200" >> ~/.bashrc
 echo "export VAULT_TOKEN=root" >> ~/.bashrc
 
 # Verify Vault status

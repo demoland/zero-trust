@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform check the challenge.
 #
@@ -10,7 +10,7 @@
 
 # Check Vault version
 vault_version=$(vault version | awk '{print $2}')
-if [[ "$vault_version" != "1.8.4" ]]; then
+if [[ "$vault_version" != "v1.13.0" ]]; then
   echo "Vault version is incorrect"
   exit 1
 fi
@@ -23,10 +23,11 @@ if [[ ! "$vault_status" =~ "Version" ]]; then
 fi
 
 # Check VAULT_ADDR and VAULT_TOKEN variables
-if [[ "$VAULT_ADDR" != "http://127.0.0.1:8200" ]]; then
+if [[ "$VAULT_ADDR" != "http://vault-server:8200" ]]; then
   echo "VAULT_ADDR variable is incorrect"
   exit 1
 fi
+
 if [[ "$VAULT_TOKEN" != "root" ]]; then
   echo "VAULT_TOKEN variable is incorrect"
   exit 1
@@ -45,4 +46,5 @@ if [[ ! "$info" =~ "name" || ! "$info" =~ "age" ]]; then
   echo "Secret/info path is incorrect"
   exit 1
 fi
+
 exit 0
