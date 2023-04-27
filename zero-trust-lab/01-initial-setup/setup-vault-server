@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+#set -x # Uncomment to Debug
+
+# Install required packages
+sudo apt-get update
+sudo apt-get install -y unzip wget
+
+# Install Vault
+wget https://releases.hashicorp.com/vault/1.8.4/vault_1.8.4_linux_amd64.zip
+unzip vault_1.8.4_linux_amd64.zip
+sudo mv vault /usr/local/bin/
+
+# Start Vault in dev mode with root token
+vault server -dev -dev-root-token-id=root &
+
+# Set environment variables
+export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_TOKEN=root
+
+# Make environment variables permanent
+echo "export VAULT_ADDR=http://127.0.0.1:8200" >> ~/.bashrc
+echo "export VAULT_TOKEN=root" >> ~/.bashrc
+
+# Verify Vault status
+vault status
+exit 0
