@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+# Update package list and install essential packages
+apt update
+apt install -y unzip curl wget jq sudo systemctl
+
+# Install PostgreSQL and necessary packages
+export TIMEZONE="UTC"
+echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections
+echo "tzdata tzdata/Zones/Etc select $TIMEZONE" | sudo debconf-set-selections
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql postgresql-contrib libpq-dev postgresql-client
+
+# Start PostgreSQL service
+systemctl enable postgresql
+service postgresql start
+
+# Create a new user and database
+sudo -u postgres createdb $PGDB
+
+
+# Install Python: 
+sudo apt install -y python3 python3-venv python3-pip
+sudo pip install Faker
+
+wget https://github.com/demoland/dataloader/releases/download/vaa65a23/dataloader-linux -O /usr/local/bin/dataloader
+chmod +x /usr/local/bin/dataloader
+
+curl https://raw.githubusercontent.com/demoland/dataloader/main/user_gen/users.json -o /tmp/users.json
+
+exit 0
