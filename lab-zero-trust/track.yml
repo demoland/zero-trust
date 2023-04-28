@@ -18,7 +18,10 @@ description: |2-
 
   Don't miss this opportunity to learn from seasoned experts in the field, exchange ideas with your peers, and advance your skills in secure application development.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
-tags: []
+tags:
+- Vault
+- Boundary
+- Consul
 owner: hashicorp
 developers:
 - daniel.fedick@hashicorp.com
@@ -29,4 +32,4 @@ lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "1001524481194119221"
+checksum: "10353789622609468720"

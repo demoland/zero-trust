@@ -5,6 +5,11 @@
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
 #
+#set -x # Uncomment to Debug
+
+# Log output to /tmp/build.out
+exec >> /tmp/build.out 2>&1
+#
 
 # Update package list and install essential packages
 apt update
@@ -20,17 +25,28 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql postgresql-con
 systemctl enable postgresql
 service postgresql start
 
-# Create a new user and database
-sudo -u postgres createdb $PGDB
+# Set Postgres to listen on all interfaces
+sudo sed -i "s/^#listen_addresses\s*=\s*'localhost'.*/listen_addresses = '*'/g" /etc/postgresql/14/main/postgresql.conf
+echo "host    all             all             0.0.0.0/0               md5" >> /etc/postgresql/14/main/pg_hba.conf
+service postgresql restart
 
+# Create a new user database and set password for postgres user
+sudo -u postgres createdb $PGDB
+echo "ALTER USER postgres WITH PASSWORD '$PGPASSWORD';" | sudo -u postgres psql
 
 # Install Python: 
 sudo apt install -y python3 python3-venv python3-pip
 sudo pip install Faker
 
-wget https://github.com/demoland/dataloader/releases/download/vaa65a23/dataloader-linux -O /usr/local/bin/dataloader
-chmod +x /usr/local/bin/dataloader
+wget https://github.com/demoland/dataloader/releases/download/vaa65a23/dataloader-linux -O /usr/local/bin/dataload
+chmod +x /usr/local/bin/dataload
 
 curl https://raw.githubusercontent.com/demoland/dataloader/main/user_gen/users.json -o /tmp/users.json
 
+
 exit 0
+
+
+
+
+

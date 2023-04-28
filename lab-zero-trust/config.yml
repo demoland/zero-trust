@@ -12,8 +12,10 @@ containers:
   memory: 256
   environment:
     VAULT_ADDR: http://vault-server:8200
-    PGPASSWORD: opengovcon
-    PGUSER: postgres 
+    PGPASSWORD: postgres
+    PGUSER:  postgres
     PGDB: users
+    PGHOST: app-server
+    PGPORT: 5432
 aws_accounts:
 - name: awsaccount
