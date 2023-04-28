@@ -13,7 +13,7 @@ exec >> /tmp/build.out 2>&1
 
 # Update package list and install essential packages
 apt update
-apt install -y unzip curl wget jq sudo systemctl
+apt install -y unzip curl wget jq sudo systemctl inetutils-ping
 
 # Install PostgreSQL and necessary packages
 export TIMEZONE="UTC"
@@ -38,15 +38,11 @@ echo "ALTER USER postgres WITH PASSWORD '$PGPASSWORD';" | sudo -u postgres psql
 sudo apt install -y python3 python3-venv python3-pip
 sudo pip install Faker
 
-wget https://github.com/demoland/dataloader/releases/download/v3dd7ac4/dataloader-linux -O /usr/local/bin/dataload
+wget https://github.com/demoland/dataloader/releases/download/v460f5ff/dataloader-linux -O /usr/local/bin/dataload
 chmod +x /usr/local/bin/dataload
 
 curl https://raw.githubusercontent.com/demoland/dataloader/main/user_gen/users.json -o /tmp/users.json
 
 
+
 exit 0
-
-
-
-
-

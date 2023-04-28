@@ -1,22 +1,35 @@
 ---
-slug: review-application
+slug: data-load
 id: pol8netencvp
 type: challenge
-title: Review Application
+title: Load User Data
 teaser: In this challenge, we will review the database information and load data into
   the database.
 notes:
 - type: text
-  contents: |
+  contents: |+
     In this example, OpenGovCo has a Postgres database with a list of their users.
-    The database is located at $PGHOST:$PGPORT
-    The username can be accessed by the $PGUSER username
-    The password can also be accessed by the $PGPASSWORD variable.
-    The database can be accessed by the $PGDB variable.
+
+    The following variables will be helpful when trying to interact with the database.
+
+    The database is located at `$HOSTNAME:$PGPORT`
+
+    The username can be accessed by the `$PGUSER` username
+
+    The password can also be accessed by the `$PGPASSWORD` variable.
+
+    The database can be accessed by the `$PGDB` variable.
+
+    **Challenge  Objectives:**
 
     In this challenge we will load user data into the Postgres Database.
+
     The data is located in the file: `/tmp/users.json`
-    We will load data into the database using the `dataload` command:
+
+    We will load data into the database using the `dataload` command
+
+    Then we will query the database to see the data with unencrypted PII.
+
 tabs:
 - title: Shell
   type: terminal
@@ -26,8 +39,6 @@ timelimit: 600
 ---
 
 For the purposes of this lab, we've setup a Postgres database and a user/password.
-
-
 
 ```bash
 sudo -u postgres -i psql
@@ -79,7 +90,7 @@ psql -U $PGUSER -d $PGDB -h $PGHOST -p $PGPORT -W -c "select * from users;"
 
 You should get the following response:
 
-```sql
+```sql,nocopy
 ERROR:  relation "users" does not exist
 LINE 1: select * from users;
 ```
@@ -87,17 +98,15 @@ LINE 1: select * from users;
 Load the data into the database using the dataload command:
 
 ```bash
-dataload -host $HOSTNAME -db $PGDB  -p $PGPORT -f /tmp/users.json -P $PGPASSWORD
+dataload -hostname $HOSTNAME -database $PGDB  -port $PGPORT -file /tmp/users.json -password $PGPASSWORD
 ```
 
 Connect to the database:
 
-```bash
-psql -U $PGUSER -d $PGDB -h $PGHOST -p $PGPORT -W
-```
-
-View the name, email, social_security, and credit_card colums to view from the database:
+View the name, email, socialsecurity, and creditcard colums to view from the database:
 
 ```bash
-select name, email, social_security, credit_card from users;
+psql -h app-server -p 5432 -U postgres -d users -c "select name, email, socialsecurity, creditcard from users;"
 ```
+
+Notice that there is PII in this database.  This is a problem.  We will fix this in a future challenge!
