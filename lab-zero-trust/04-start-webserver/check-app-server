@@ -8,4 +8,11 @@
 
 echo "This is the check script"
 
+DOWNLOADSTAT=$(ls  /usr/local/bin/dataviewer | wc -l)
+if [[ $DOWNLOADSTAT -eq 0 ]]; then
+    echo "Failed to download dataviewer"
+    exit 1
+fi
+
+
 exit 0
