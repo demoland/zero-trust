@@ -37,5 +37,5 @@ timelimit: 600
 Let's start the Data Viewer web server.
 
 ```bash
-dataviewer -database users -port 5432 -user postgres -password postgres
+dataviewer -database users -port $PGPORT -hostname $HOSTNAME -password postgres
 ```

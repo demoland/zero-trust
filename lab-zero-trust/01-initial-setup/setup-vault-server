@@ -7,30 +7,33 @@
 #
 #set -x # Uncomment to Debug
 
-# Log output to /tmp/build.out
-exec >> /tmp/build.out 2>&1
-
 # Install required packages
+echo "Installing required packages in Vault server"
 apt-get update
 apt-get install -y unzip wget jq
 
 # Install Vault
+echo "Installing vault on Vault Server"
 export VAULT_VERSION=1.13.0
 wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
 unzip vault_${VAULT_VERSION}_linux_amd64.zip
 mv vault /usr/local/bin/
 
 # Start Vault in dev mode with root token
+echo "Starting vault in dev mode"
 vault server -dev -dev-root-token-id=root -dev-listen-address=vault-server:8200 &
 
 # Set environment variables
+echo "Setting Vault environment variables"
 export VAULT_ADDR=http://vault-server:8200
 export VAULT_TOKEN=root
 
 # Make environment variables permanent
+echo "Making Vault environment variables permanent"
 echo "export VAULT_ADDR=http://vault-server:8200" >> ~/.bashrc
 echo "export VAULT_TOKEN=root" >> ~/.bashrc
 
 # Verify Vault status
+echo "Verifying Vault status"
 vault status
 exit 0

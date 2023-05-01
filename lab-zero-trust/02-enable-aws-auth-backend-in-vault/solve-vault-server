@@ -9,8 +9,10 @@
 export VAULT_ADDR=http://127.0.0.1:8200
 export VAULT_TOKEN=root
 
+echo "Solve: Enable AWS Auth Backend in Vault"
 vault auth enable aws
 
+echo "Solve: Configure AWS Auth Backend in Vault"
 vault write auth/aws/config/client \
  access_key="$AWS_ACCESS_KEY_ID" \
  secret_key="$AWS_SECRET_ACCESS_KEY" \

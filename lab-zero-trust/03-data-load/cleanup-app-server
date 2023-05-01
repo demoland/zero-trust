@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform cleanup the challenge.
 #
@@ -7,5 +7,3 @@
 #
 
 echo "This is the cleanup script"
-
-exit 0

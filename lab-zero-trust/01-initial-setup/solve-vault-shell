@@ -6,6 +6,9 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "Nothing in particular to solve here."
+echo "Solving the challenge by loading a default k/v pair into vault"
 
+export user="Dan Fedick"
+export age="45"
+vault kv put secret/info name="${user}" age="${age}"
 exit 0

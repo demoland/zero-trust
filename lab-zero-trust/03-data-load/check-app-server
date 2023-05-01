@@ -1,0 +1,25 @@
+#!/bin/bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+#!/bin/bash
+
+# Is Data loaded into the database? 
+echo "Check: Ensure data is loaded into the database"
+data_loaded=$(psql -U postgres -d postgres -c "SELECT COUNT(*) FROM users;" | awk 'NR==3 {print $1}')
+if [[ "$data_loadded" != "50"  ]]; then
+  fail-message "Data is not loaded into the database"
+  exit 1
+fi
+
+echo "Check: Data viewer is installed"
+if [ -f /usr/local/bin/dataviewer ]
+do
+    echo "Data viewer is installed" 
+done
+
+exit 0

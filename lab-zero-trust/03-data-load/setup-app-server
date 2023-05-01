@@ -7,43 +7,43 @@
 #
 #set -x # Uncomment to Debug
 
-# Log output to /tmp/build.out
-exec >> /tmp/build.out 2>&1
-#
-
 # Update package list and install essential packages
+echo "Installing base packages"
 apt update
 apt install -y unzip curl wget jq sudo systemctl inetutils-ping
 
 # Install PostgreSQL and necessary packages
+echo "Installing DB packages"
 export TIMEZONE="UTC"
 echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections
 echo "tzdata tzdata/Zones/Etc select $TIMEZONE" | sudo debconf-set-selections
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql postgresql-contrib libpq-dev postgresql-client
 
 # Start PostgreSQL service
+echo "Starting DB Service"
 systemctl enable postgresql
 service postgresql start
 
 # Set Postgres to listen on all interfaces
+echo "Setting default DB Config"
 sudo sed -i "s/^#listen_addresses\s*=\s*'localhost'.*/listen_addresses = '*'/g" /etc/postgresql/14/main/postgresql.conf
 echo "host    all             all             0.0.0.0/0               md5" >> /etc/postgresql/14/main/pg_hba.conf
 service postgresql restart
 
 # Create a new user database and set password for postgres user
+echo "Creating DB and User"
 sudo -u postgres createdb $PGDB
 echo "ALTER USER postgres WITH PASSWORD '$PGPASSWORD';" | sudo -u postgres psql
 
 # Install Python: 
+echo "Installing Python"    
 sudo apt install -y python3 python3-venv python3-pip
 sudo pip install Faker
 
-wget https://github.com/demoland/dataloader/releases/download/v6fd7c10/dataloader-linux -O /usr/local/bin/dataload
+# Data LOADER 
+export DATA_LOADER_VERSION="v2089f8a"
+echo "Installing data loader, version ${DATA_LOADER_VERSION}"
+wget https://github.com/demoland/dataloader/releases/download/${DATA_LOADER_VERSION}/dataloader-linux -O /usr/local/bin/dataload
 chmod +x /usr/local/bin/dataload
-
-curl https://raw.githubusercontent.com/demoland/dataloader/main/user_gen/users.json -o /tmp/users.json
-
-wget https://github.com/demoland/dataloader/releases/download/v6fd7c10/dataviewer-linux -O /usr/local/bin/dataviewer
-chmod +x /usr/local/bin/dataviewer
 
 exit 0
