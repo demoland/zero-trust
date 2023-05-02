@@ -6,6 +6,8 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
+#/usr/local/bin/vault server -dev -dev-root-token-id=${VAULT_TOKEN} -dev-listen-address=0.0.0.0:8200 &
+
 # Variables
 echo "Setting up variables"
 export user="Dan Fedick"

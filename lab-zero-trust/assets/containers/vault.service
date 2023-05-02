@@ -1,0 +1,17 @@
+[Unit]
+Description=Vault
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+User=<your-username>
+Group=<your-group>
+ExecStart=/usr/bin/vault server -dev -dev-root-token-id=root -dev-listen-address=vault-server:8200
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=SIGTERM
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

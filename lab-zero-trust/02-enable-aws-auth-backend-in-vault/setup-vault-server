@@ -4,8 +4,19 @@
 #
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
-#
+# exec > >(tee -i /tmp/setup.out)
 
 echo "This is the setup script"
+
+echo "Running Vault Status Command"
+vault status
+
+echo ""
+echo VAULT_ADDR: $VAULT_ADDR
+echo VAULT_TOKEN: $VAULT_TOKEN
+echo HOSTNAME: $HOSTNAME
+echo AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+echo AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+echo ""
 
 exit 0

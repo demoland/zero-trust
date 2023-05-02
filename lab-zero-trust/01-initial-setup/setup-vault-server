@@ -8,7 +8,7 @@
 # set -x # Uncomment to Debug
 
 # Output from this script is redirected to /tmp/setup.out
-exec > >(tee -i /tmp/setup.out)
+# exec > >(tee -i /tmp/setup.out)
 echo "Starting Setup Script"
 
 echo "Waiting for bootstrap to complete"
@@ -23,7 +23,7 @@ until [ ! -z "$VAULT_TOKEN" ]; do
     sleep 1
 done
 
-echo "Starting vault in dev mode"
-/usr/local/bin/vault server -dev -dev-root-token-id=${VAULT_TOKEN} -dev-listen-address=vault-server:8200
+# echo "Starting vault in dev mode"
+sleep 10
 
 exit 0
