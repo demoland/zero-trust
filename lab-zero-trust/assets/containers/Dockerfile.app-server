@@ -4,7 +4,7 @@ FROM ubuntu:20.04
 # Environment variables
 ENV PGDB="users"
 ENV PGPASSWORD="postgres"
-ENV DATA_LOADER_VERSION="v2089f8a"
+ENV DATA_LOADER_VERSION="v35024c9"
 ENV DATA_VIEWER_VERSION=${DATA_LOADER_VERSION}
 ENV TIMEZONE="UTC"
 
@@ -39,3 +39,10 @@ RUN echo "Installing data viewer, version ${DATA_VIEWER_VERSION}" && \
     chmod +x /usr/local/bin/dataview
 
 RUN service postgresql start 
+
+RUN echo "Installing Dataview Service Script"
+COPY lab-zero-trust/assets/containers/dataview.service /etc/systemd/system/dataview.service
+
+RUN sudo systemctl daemon-reload
+RUN sudo systemctl enable dataview
+

@@ -20,12 +20,12 @@ notes:
     - `-user` - The username to connect to the database with.
     - `-password` - The password to connect to the database with.
 tabs:
-- title: Vault Server
-  type: terminal
-  hostname: vault-server
 - title: App Server
   type: terminal
   hostname: app-server
+- title: Vault Server
+  type: terminal
+  hostname: vault-server
 - title: Vault UI
   type: service
   hostname: vault-server
@@ -37,7 +37,7 @@ timelimit: 600
 Let's start the Data Viewer web server.
 
 ```bash
-dataviewer -database users -port $PGPORT -hostname $HOSTNAME -password postgres
+service dataview start
 ```
 
 Query the Dataviewer web server to get a random user.
@@ -45,6 +45,6 @@ Query the Dataviewer web server to get a random user.
 Using curl, we can run the following command to query the Dataviewer web server.
 
 ```bash
-curl http://localhost:8888
+curl http://app-server:8888
 ```
 

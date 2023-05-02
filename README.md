@@ -1,6 +1,6 @@
-# zero-trust
+# Zero Trust  zero-trust
 
-## Useful Track commands for development:
+## Useful Track commands for development
 
 * Create New Track
 
@@ -23,3 +23,9 @@ cd zero-trust/lab-zero-trust
 instruqt track test --skip-fail-check
 ```
 
+* For Troubleshooting during development
+
+```bash
+cd zero-trust/lab-zero-trust
+instruqt track logs
+```

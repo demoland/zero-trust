@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - lab-zero-trust/assets/containers/Dockerfile.app-server
+      - lab-zero-trust/assets/containers/dataview.service
   pull_request:
     branches: [ "main" ]
     paths:
