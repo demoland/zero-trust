@@ -33,7 +33,8 @@ RUN echo "Installing data loader, version ${DATA_LOADER_VERSION}" && \
     wget https://github.com/demoland/dataloader/releases/download/${DATA_LOADER_VERSION}/dataloader-linux -O /usr/local/bin/dataload && \
     chmod +x /usr/local/bin/dataload
 
-RUN mkdir /db
-RUN wget https://raw.githubusercontent.com/demoland/dataloader/main/user_gen/users.json -O /db/users.json
+RUN echo "Installing data viewer, version ${DATA_VIEWER_VERSION}" && \
+    wget https://github.com/demoland/dataloader/releases/download/${DATA_VIEWER_VERSION}/dataviewer-linux -O /usr/local/bin/dataload && \
+    chmod +x /usr/local/bin/dataviewer
 
 RUN service postgresql start 
