@@ -5,10 +5,12 @@ on:
     branches: [ "main" ]
     paths:
       - lab-zero-trust/assets/containers/Dockerfile.vault-server
+      - lab-zero-trust/assets/containers/vault.service
   pull_request:
     branches: [ "main" ]
     paths:
       - lab-zero-trust/assets/containers/Dockerfile.vault-server
+      - lab-zero-trust/assets/containers/vault.service
   workflow_dispatch:
 jobs:
   build:
