@@ -1,11 +1,11 @@
 [Unit]
-Description=Vault
+Description=Vault Server - Dev Mode
 Requires=network-online.target
 After=network-online.target
 
 [Service]
-User=<your-username>
-Group=<your-group>
+User=root
+Group=root
 ExecStart=/usr/local/bin/vault server -dev -dev-root-token-id=root -dev-listen-address=vault-server:8200
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM
