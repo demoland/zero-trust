@@ -29,6 +29,12 @@ timelimit: 600
 
 ## This is the first line
 
+Start Vault in Development mode:
+  
+```bash
+   /usr/local/bin/vault server -dev -dev-root-token-id=root -dev-listen-address=vault-server:8200 &
+```
+
 Check to see what version of Vault is installed on your system.
 
 ```bash
