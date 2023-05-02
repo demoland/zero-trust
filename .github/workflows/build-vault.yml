@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build Vault-Server Container
 # If Action doesn't run, check: https://www.githubstatus.com/
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main" ]
     paths:
-      - './lab-zero-trust/assets/containers/Dockerfile*'
+      - './lab-zero-trust/assets/containers/Dockerfile.vault-server'
   workflow_dispatch:
 
 jobs:
@@ -31,7 +31,5 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           docker build -f ./lab-zero-trust/assets/containers/Dockerfile.vault-server -t danfedick/vault-server:latest .
-          docker build -f ./lab-zero-trust/assets/containers/Dockerfile.app-server -t danfedick/app-server:latest .
           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
           docker push danfedick/vault-server:latest
-          docker push danfedick/app-server:latest
