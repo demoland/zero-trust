@@ -3,12 +3,13 @@ name: Build Vault-Server Container
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - './lab-zero-trust/assets/containers/Dockerfile.vault-server'
   pull_request:
     branches: [ "main" ]
     paths:
       - './lab-zero-trust/assets/containers/Dockerfile.vault-server'
   workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
