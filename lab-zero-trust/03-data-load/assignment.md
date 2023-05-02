@@ -85,7 +85,7 @@ cat /tmp/users.json | jq -r .
 Check the database to ensure it is empty:
 
 ```bash
-psql -U $PGUSER -d $PGDB -h $PGHOST -p $PGPORT -W -c "select * from users;"
+psql -U $PGUSER -d $PGDB -h $PGHOST -p $PGPORT -c "select * from users;"
 ```
 
 You should get the following response:

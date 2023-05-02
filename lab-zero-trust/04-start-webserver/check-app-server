@@ -6,13 +6,25 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the check script"
-
-DOWNLOADSTAT=$(ls  /usr/local/bin/dataviewer | wc -l)
-if [[ $DOWNLOADSTAT -eq 0 ]]; then
-    echo "Failed to download dataviewer"
+echo "Check to see if Postgres is running"
+postgres_stat=$(service postgresql status |awk '{print $NF}')
+if [[ $postgres_stat != "online" ]]; then
+    echo "Postgres is not running"
     exit 1
 fi
 
+echo "Check to see if Dataview is installed"
+if [[ ! -f /usr/local/bin/dataview ]]; then
+    echo "DataView server is not installed"
+    exit 1
+fi
+
+echo "Check if dataview is running and getting 200 response"
+
+stat=$(curl -s -o /dev/null -w "%{http_code}" http:/app-server:8888)
+if [[ $stat -ne 200 ]]; then
+    echo "Dataview server is not running"
+    exit 1
+fi
 
 exit 0

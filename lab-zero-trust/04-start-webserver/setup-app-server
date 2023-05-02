@@ -5,6 +5,14 @@
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
 #
-echo "This is the setup script"
+echo "Check to see if Postgres is running"
+
+postgres_stat=$(service postgresql status |awk '{print $NF}')
+
+if [[ $postgres_stat != "online" ]]; then
+    echo "Postgres is not running"
+    service postgresql start
+    echo "Starting Postgresql"
+fi
 
 exit 0

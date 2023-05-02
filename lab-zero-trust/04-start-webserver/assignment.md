@@ -13,12 +13,6 @@ notes:
 
     The Data Viewer web server is a Go application that is already installed on the
     app-server. The web server is located at `/usr/local/bin/dataviewer`.
-
-    The Data Viewer web server requires the following arguments:
-    - `-database` - The name of the database to connect to.
-    - `-port` - The port number to connect to the database on.
-    - `-user` - The username to connect to the database with.
-    - `-password` - The password to connect to the database with.
 tabs:
 - title: App Server
   type: terminal
@@ -37,7 +31,7 @@ timelimit: 600
 Let's start the Data Viewer web server.
 
 ```bash
-service dataview start
+systemctl start dataview
 ```
 
 Query the Dataviewer web server to get a random user.
@@ -45,6 +39,5 @@ Query the Dataviewer web server to get a random user.
 Using curl, we can run the following command to query the Dataviewer web server.
 
 ```bash
-curl http://app-server:8888
+curl -s http://app-server:8888
 ```
-

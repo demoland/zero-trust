@@ -6,6 +6,10 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the solve script"
+echo "Starting Postgres"
+service postgresql start
+
+echo "Starting Dataview"
+systemctl start dataview
 
 exit 0
