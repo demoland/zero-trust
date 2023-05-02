@@ -24,12 +24,6 @@ RUN systemctl enable postgresql && \
 RUN sudo sed -i "s/^#listen_addresses\s*=\s*'localhost'.*/listen_addresses = '*'/g" /etc/postgresql/12/main/postgresql.conf && \
     echo "host    all             all             0.0.0.0/0               md5" >> /etc/postgresql/12/main/pg_hba.conf
 
-
-# RUN service postgresql start
-# # Create a new user database and set password for postgres user
-# RUN sudo -u postgres createdb $PGDB 
-# RUN echo "ALTER USER postgres WITH PASSWORD '$PGPASSWORD';" | sudo -u postgres psql
-
 # Install Python: 
 RUN sudo apt install -y python3 python3-venv python3-pip && \
     sudo pip install Faker
