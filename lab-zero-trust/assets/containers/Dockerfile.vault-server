@@ -12,4 +12,4 @@ RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VER
 RUN unzip vault_${VAULT_VERSION}_linux_amd64.zip
 RUN mv vault /usr/local/bin/
 RUN chmod -R 755 /usr/local/bin/vault
-COPY ./vault.service /etc/systemd/system/vault.service
+COPY lab-zero-trust/assets/containers/vault.service /etc/systemd/system/vault.service
