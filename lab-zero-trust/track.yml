@@ -12,9 +12,9 @@ description: |2-
   * Master Boundary secrets injection with Vault, enabling you to protect sensitive information and maintain robust security throughout the application lifecycle.
 
   ## Why You Should Attend:
-  This workshop is designed for developers, architects, and security professionals who want to stay ahead of the curve by adopting a zero trust approach to application development.
+  This workshop is designed for developers, architects, and security professionals who want to stay ahead of the curve by adopting a zero-trust approach to application development.
   By taking this workshop, you will gain valuable insights into the latest tools and methodologies that promote security, resiliency, and scalability in modern applications.
-  Equip yourself with the knowledge and expertise needed to build secure and reliable applications using HashiCorp tools and the zero trust methodology.
+  Equip yourself with the knowledge and expertise needed to build secure and reliable applications using HashiCorp tools and the zero-trust methodology.
 
   Don't miss this opportunity to learn from seasoned experts in the field, exchange ideas with your peers, and advance your skills in secure application development.
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
@@ -33,4 +33,4 @@ lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "5416158105061813427"
+checksum: "2356169411959681563"

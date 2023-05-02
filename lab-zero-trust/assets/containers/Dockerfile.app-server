@@ -46,3 +46,9 @@ COPY lab-zero-trust/assets/containers/dataview.service /etc/systemd/system/datav
 RUN sudo systemctl daemon-reload
 RUN sudo systemctl enable dataview
 
+ENV VAULT_VERSION=1.13.0
+WORKDIR /tmp
+RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
+RUN unzip vault_${VAULT_VERSION}_linux_amd64.zip
+RUN mv vault /usr/local/bin/
+RUN chmod -R 755 /usr/local/bin/vault

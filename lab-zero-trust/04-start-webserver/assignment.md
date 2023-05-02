@@ -34,10 +34,33 @@ Let's start the Data Viewer web server.
 systemctl start dataview
 ```
 
-Query the Dataviewer web server to get a random user.
+Let's check the status of the Data Viewer web server.
 
-Using curl, we can run the following command to query the Dataviewer web server.
+```bash
+systemctl status dataview
+```
+
+You should get the following output.
+
+```bash nocopy
+dataview.service - DataView Service for Getting Users
+    Loaded: loaded (/etc/systemd/system/dataview.service, enabled)
+    Active: active (running)
+```
+
+Let's query the Dataviewer web server to get a random user.
+
+With `curl`, we can run the following command to query the Dataviewer web server.
 
 ```bash
 curl -s http://app-server:8888
 ```
+
+Try running the command multiple times. 
+
+You should get random users each time. 
+
+This is a very simple web server, giving us information.  
+
+Now we have a web server running, that can query the users in a database and display them in `json` format. 
+
