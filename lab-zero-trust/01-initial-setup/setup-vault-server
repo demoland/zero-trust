@@ -6,9 +6,13 @@
 # script. If the exit code is not 0, the script fails. 
 #
 #set -x # Uncomment to Debug
+until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]; do
+  echo "Waiting for bootstrap to complete"
+    sleep 1
+done
 
 # Start Vault in dev mode with root token
 echo "Starting vault in dev mode"
-vault server -dev -dev-root-token-id=root -dev-listen-address=vault-server:8200 &
+nohup /usr/local/bin/vault server -dev -dev-root-token-id=root -dev-listen-address=vault-server:8200 &
 
 exit 0
