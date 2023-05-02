@@ -1,0 +1,37 @@
+name: Build and Release
+# If Action doesn't run, check: https://www.githubstatus.com/
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - './lab-zero-trust/assets/containers/Dockerfile*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+
+      - name: Set revision environment variable
+        run: |
+          REVISION=$(git rev-parse --short HEAD)
+          echo "REVISION=$REVISION" >> $GITHUB_ENV
+
+      - name: Build and push vault-server image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          docker build -f ./lab-zero-trust/assets/containers/Dockerfile.vault-server -t danfedick/vault-server:latest .
+          docker build -f ./lab-zero-trust/assets/containers/Dockerfile.app-server -t danfedick/app-server:latest .
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker push danfedick/vault-server:latest
+          docker push danfedick/app-server:latest

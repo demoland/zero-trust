@@ -18,38 +18,10 @@ fi
 
 # Check Vault status
 echo "Check: Vault Status"
-vault_status=$(vault status)
-if [[ ! "$vault_status" =~ "Version" ]]; then
+vault_status=$(vault status |grep Sealed |awk '{print $2})
+if [[ "$vault_status" != "false" ]]; then
   echo "Vault is not running"
   exit 1
 fi
-
-# Check VAULT_ADDR and VAULT_TOKEN variables
-echo "Check: VAULT_ADDR and VAULT_TOKEN variables"
-if [[ "$VAULT_ADDR" != "http://vault-server:8200" ]]; then
-  echo "VAULT_ADDR variable is incorrect"
-  exit 1
-fi
-
-if [[ "$VAULT_TOKEN" != "root" ]]; then
-  echo "VAULT_TOKEN variable is incorrect"
-  exit 1
-fi
-
-# Check enabled secrets mounts
-# echo "Check: Enabled kv2 secrets mounts"
-# secrets_mounts=$(vault secrets list | awk '{print $1}')
-# if [[ ! "$secrets_mounts" =~ "secret/" ]]; then
-#   echo "Secrets mount is not enabled"
-#   exit 1
-# fi
-
-# # Check secret/info contents
-# echo "Check: secret/info contents"
-# age=$(vault kv get -format=json secret/info |jq -r .data.data.age)
-# if [[ -z "$age" ]]; then
-#   echo "Secret/info path is incorrect"
-#   exit 1
-# fi
 
 exit 0

@@ -1,0 +1,14 @@
+# 
+FROM ubuntu:20.04
+
+# Install required packages
+RUN apt-get update
+RUN apt-get install -y unzip wget jq
+
+# Install Vault
+ENV VAULT_VERSION=1.13.0
+WORKDIR /tmp
+RUN wget https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip
+RUN unzip vault_${VAULT_VERSION}_linux_amd64.zip
+RUN mv vault /usr/local/bin/
+RUN chmod -R 755 /usr/local/bin/vault

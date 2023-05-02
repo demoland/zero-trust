@@ -6,4 +6,15 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-exit 0
+# Check Vault status
+echo "Check: Vault Status"
+va_enabled=$(vault auth list |grep aws |awk -F"/" '{print $1}')
+if [[ "$va_enabled" != "aws" ]]; then
+  fail_message "Vault AWS Auth is not enabled"
+  exit 1
+fi
+
+# # Check to see if AWS role is configured
+# echo "Check: AWS  configured"
+# aws_role=$(vault read auth/aws/config/client)
+# exit 0

@@ -1,17 +1,19 @@
 version: "3"
 containers:
 - name: vault-server
-  image: ubuntu
+  image: danfedick/vault-server:latest
   shell: /bin/bash
   memory: 256
   environment:
     VAULT_ADDR: http://vault-server:8200
+    VAULT_TOKEN: root
 - name: app-server
-  image: ubuntu
+  image: danfedick/app-server:latest
   shell: /bin/bash
   memory: 256
   environment:
     VAULT_ADDR: http://vault-server:8200
+    VAULT_TOKEN: root
     PGPASSWORD: postgres
     PGUSER:  postgres
     PGDB: users

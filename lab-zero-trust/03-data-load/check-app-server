@@ -16,10 +16,4 @@ if [[ "$data_loadded" != "50"  ]]; then
   exit 1
 fi
 
-echo "Check: Data viewer is installed"
-if [ -f /usr/local/bin/dataviewer ]
-do
-    echo "Data viewer is installed" 
-done
-
 exit 0

@@ -1,0 +1,42 @@
+# 
+FROM ubuntu:20.04
+
+# Environment variables
+ENV PGDB="users"
+ENV PGPASSWORD="postgres"
+ENV DATA_LOADER_VERSION="v2089f8a"
+ENV TIMEZONE="UTC"
+
+# Install required packages
+RUN apt-get update
+RUN apt-get install -y unzip curl wget jq sudo systemctl inetutils-ping 
+
+# Install PostgreSQL and necessary packages
+RUN echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections && \
+    echo "tzdata tzdata/Zones/Etc select $TIMEZONE" | sudo debconf-set-selections && \
+    sudo DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql postgresql-contrib libpq-dev postgresql-client
+
+# Start PostgreSQL service
+RUN systemctl enable postgresql && \
+    systemctl stop postgresql
+
+# Set Postgres to listen on all interfaces
+RUN sudo sed -i "s/^#listen_addresses\s*=\s*'localhost'.*/listen_addresses = '*'/g" /etc/postgresql/12/main/postgresql.conf && \
+    echo "host    all             all             0.0.0.0/0               md5" >> /etc/postgresql/12/main/pg_hba.conf
+
+
+# RUN service postgresql start
+# # Create a new user database and set password for postgres user
+# RUN sudo -u postgres createdb $PGDB 
+# RUN echo "ALTER USER postgres WITH PASSWORD '$PGPASSWORD';" | sudo -u postgres psql
+
+# Install Python: 
+RUN sudo apt install -y python3 python3-venv python3-pip && \
+    sudo pip install Faker
+
+# Data LOADER 
+RUN echo "Installing data loader, version ${DATA_LOADER_VERSION}" && \
+    wget https://github.com/demoland/dataloader/releases/download/${DATA_LOADER_VERSION}/dataloader-linux -O /usr/local/bin/dataload && \
+    chmod +x /usr/local/bin/dataload
+
+RUN service postgresql start 
