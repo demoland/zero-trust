@@ -12,4 +12,9 @@
 echo "Setup: Start Postgres Database"
 service postgresql start
 
+#Create a new user database and set password for postgres user
+sudo -u postgres createdb $PGDB 
+echo "ALTER USER postgres WITH PASSWORD '$PGPASSWORD';" | sudo -u postgres psql
 
+# Get Latest Users file and place in /tmp
+wget https://raw.githubusercontent.com/demoland/dataloader/main/user_gen/users.json -O /tmp/users.json

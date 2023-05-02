@@ -10,9 +10,13 @@
 
 # Is Data loaded into the database? 
 echo "Check: Ensure data is loaded into the database"
-data_loaded=$(psql -U postgres -d postgres -c "SELECT COUNT(*) FROM users;" | awk 'NR==3 {print $1}')
-if [[ "$data_loadded" != "50"  ]]; then
-  fail-message "Data is not loaded into the database"
+echo "Counting records in user database"
+
+count=$(sudo -u postgres psql -d users  -c "select count(*) from users;" |grep 50 |awk '{print $1}')
+echo "Count: $count"
+
+if [[ "$count" != "50"  ]]; then
+  echo "Data is not loaded into the database"
   exit 1
 fi
 
