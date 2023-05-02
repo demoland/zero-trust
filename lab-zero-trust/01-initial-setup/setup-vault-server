@@ -5,16 +5,25 @@
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
 #
+# set -x # Uncomment to Debug
 
-#set -x # Uncomment to Debug
+# Output from this script is redirected to /tmp/setup.out
+exec > >(tee -i /tmp/setup.out)
+echo "Starting Setup Script"
+
+echo "Waiting for bootstrap to complete"
 until [ -f /opt/instruqt/bootstrap/host-bootstrap-completed ]; do
   echo "Waiting for bootstrap to complete"
     sleep 1
 done
 
+echo "Waiting for vault token to be available"
 until [ ! -z "$VAULT_TOKEN" ]; do
   echo "Waiting for vault token to be available"
     sleep 1
 done
+
+echo "Starting vault in dev mode"
+/usr/local/bin/vault server -dev -dev-root-token-id=${VAULT_TOKEN} -dev-listen-address=vault-server:8200
 
 exit 0
