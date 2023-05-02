@@ -5,6 +5,7 @@ FROM ubuntu:20.04
 ENV PGDB="users"
 ENV PGPASSWORD="postgres"
 ENV DATA_LOADER_VERSION="v2089f8a"
+ENV DATA_VIEWER_VERSION=${DATA_LOADER_VERSION}
 ENV TIMEZONE="UTC"
 
 # Install required packages
@@ -34,7 +35,7 @@ RUN echo "Installing data loader, version ${DATA_LOADER_VERSION}" && \
     chmod +x /usr/local/bin/dataload
 
 RUN echo "Installing data viewer, version ${DATA_VIEWER_VERSION}" && \
-    wget https://github.com/demoland/dataloader/releases/download/${DATA_VIEWER_VERSION}/dataviewer-linux -O /usr/local/bin/dataload && \
-    chmod +x /usr/local/bin/dataviewer
+    wget https://github.com/demoland/dataloader/releases/download/${DATA_VIEWER_VERSION}/dataviewer-linux -O /usr/local/bin/dataview && \
+    chmod +x /usr/local/bin/dataview
 
 RUN service postgresql start 

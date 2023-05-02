@@ -39,3 +39,12 @@ Let's start the Data Viewer web server.
 ```bash
 dataviewer -database users -port $PGPORT -hostname $HOSTNAME -password postgres
 ```
+
+Query the Dataviewer web server to get a random user.
+
+Using curl, we can run the following command to query the Dataviewer web server.
+
+```bash
+curl http://localhost:8888
+```
+
