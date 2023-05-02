@@ -24,9 +24,9 @@ until [ ! -z "$VAULT_TOKEN" ]; do
 done
 
 # echo "Starting vault in dev mode"
-systemctl enable vault
 systemctl daemon-reload
 systemctl start vault
+systemctl enable vault
 
 sleep 10
 
