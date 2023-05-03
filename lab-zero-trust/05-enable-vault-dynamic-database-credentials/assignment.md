@@ -78,16 +78,24 @@ vault read database/creds/dataviewer
 
 Let's test the credentials.  We can use the `psql` command to connect to the database.
 
+This time, let's query from the `App Server` terminal.
+
 ```bash
-vault read -format=json database/creds/dataviewer > /tmp/credz.json
+CREDZ=$(vault read -format=json database/creds/dataviewer)
 ```
 
 Now we can use `jq` to parse the json and get the username and password.
 
 ```bash
-CREDZ=$(vault read -format=json database/creds/dataviewer)
 PGUSER=$(echo $CREDZ | jq -r '.data.username')
 PGPASSWORD=$(echo $CREDZ | jq -r '.data.password')
+```
+
+Show the values of the PGUSER and PGPASSWORD variables.
+
+```bash
+echo $PGUSER
+echo $PGPASSWORD
 ```
 
 Now that we have the variables set for user and password.  Let's test them by passing them into the `psql` command.
@@ -97,7 +105,8 @@ Copy the output from the following commands run in the `Vault Server` and paste 
 Switch to the app-server terminal.
 
 ```bash
-echo "export PGUSER=$PGUSER"
-echo "export PGPASSWORD=$PGPASSWORD"
 psql -h app-server -U $PGUSER -d users -c "select Name from users limit 5;"
 ```
+
+That's great.  But how would I use this in an application?  
+

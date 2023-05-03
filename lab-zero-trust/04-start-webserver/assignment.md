@@ -56,11 +56,11 @@ With `curl`, we can run the following command to query the Dataviewer web server
 curl -s http://app-server:8888
 ```
 
-Try running the command multiple times. 
+Try running the command multiple times.
 
-You should get random users each time. 
+You should get random users each time.
 
-This is a very simple web server, giving us information.  
+This is a very simple web server, giving us information.
 
-Now we have a web server running, that can query the users in a database and display them in `json` format. 
+Now we have a web server running, that can query the users in a database and display them in `json` format.
 

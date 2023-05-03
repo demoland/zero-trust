@@ -1,6 +1,6 @@
 slug: zero-trust
 id: iyskvrx8g8gf
-title: Zero Trust Application Security
+title: IN MAINTENANCE - BUILDING - Zero Trust Application Security
 teaser: Unlock the full potential of modern security practices in application development
 description: |2-
 
@@ -33,4 +33,4 @@ lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "2356169411959681563"
+checksum: "17374629048673279274"
