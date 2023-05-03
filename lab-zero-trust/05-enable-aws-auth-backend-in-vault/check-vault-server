@@ -7,10 +7,37 @@
 #
 
 # Check Vault status
-echo "Check: Vault Status"
-va_enabled=$(vault auth list |grep aws |awk -F"/" '{print $1}')
-if [[ "$va_enabled" != "aws" ]]; then
-  fail_message "Vault AWS Auth is not enabled"
+echo "Check: Vault AWS Auth Method Enabled"
+VAULT_AUTH_ENABLED=$(vault auth list |grep aws |awk -F"/" '{print $1}')
+if [[ "$VAULT_AUTH_ENABLED" == "aws" ]]; then
+  echo "Vault AWS Auth is enabled"
+else
+  echo "Vault AWS Auth is not enabled"
+  exit 1
+fi
+
+# Check Vault AWS Auth Config
+echo "Check: Configure AWS Auth Backend in Vault"
+VAULT_AUTH_CONFIGURED=$(vault read auth/aws/config/client |grep access_key |awk '{print $1}')
+if [[ "$VAULT_AUTH_CONFIGURED" == "access_key" ]]; then
+  echo "Vault AWS Auth is configured"
+else
+  echo "Vault AWS Auth is not configured"
+  exit 1
+fi
+
+# Check that Vault Policy is created: 
+
+
+
+
+# Check Vault AWS Auth Config
+echo "Check: Vault AWS Auth Config"
+VAULT_ROLE_CREATED=$(vault read auth/aws/role/dataview |grep ^policies |awk '{print $2}')
+if [[ "$VAULT_ROLE_CREATED" == "[dataview]" ]]; then
+  echo "Vault AWS Auth Role is created"
+else
+  fail_message "Vault AWS Auth Role is not created"
   exit 1
 fi
 

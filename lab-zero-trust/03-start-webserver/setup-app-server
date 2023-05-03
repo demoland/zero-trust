@@ -15,4 +15,15 @@ if [[ $postgres_stat != "online" ]]; then
     echo "Starting Postgresql"
 fi
 
+cat << EOF > /etc/dataview.yml
+---
+username: "postgres"
+password: "postgres"
+host: "app-server"
+port: 5432
+dbName: "users"
+webPort: 8888
+EOF
+
+
 exit 0

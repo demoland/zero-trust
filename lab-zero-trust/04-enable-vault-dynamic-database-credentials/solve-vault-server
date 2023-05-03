@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform solve the challenge.
 #
@@ -6,6 +6,22 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the solve script"
+echo "Enable Vault Dynamic Database Secrets Engine"
+vault secrets enable database
 
+echo "Configure Vault Dynamic Database Secrets Engine"
+vault write database/config/users \
+    plugin_name="postgresql-database-plugin" \
+    allowed_roles="dataviewer" \
+    connection_url="postgresql://{{username}}:{{password}}@app-server:5432/users" \
+    username="postgres" \
+    password="postgres"
+
+echo "Create Vault Dynamic Database Role"
+vault write database/roles/dataview \
+    db_name="users" \
+    creation_statements="CREATE ROLE \"{{name}}\" WITH LOGIN PASSWORD '{{password}}' VALID UNTIL '{{expiration}}'; \
+        GRANT SELECT ON ALL TABLES IN SCHEMA public TO \"{{name}}\";" \
+    default_ttl="1h" \
+    max_ttl="24h"    
 exit 0

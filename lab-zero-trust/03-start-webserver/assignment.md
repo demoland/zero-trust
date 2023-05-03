@@ -17,13 +17,6 @@ tabs:
 - title: App Server
   type: terminal
   hostname: app-server
-- title: Vault Server
-  type: terminal
-  hostname: vault-server
-- title: Vault UI
-  type: service
-  hostname: vault-server
-  port: 8200
 difficulty: basic
 timelimit: 600
 ---
@@ -42,7 +35,7 @@ systemctl status dataview
 
 You should get the following output.
 
-```bash nocopy
+```bash,nocopy
 dataview.service - DataView Service for Getting Users
     Loaded: loaded (/etc/systemd/system/dataview.service, enabled)
     Active: active (running)
@@ -60,7 +53,14 @@ Try running the command multiple times.
 
 You should get random users each time.
 
-This is a very simple web server, giving us information.
+This is a very simple web server, giving us user information.
+
+The configuration file for this web application can be found in /etc:
+
+```bash
+cat /etc/dataview.yml
+```
+
+Notice the static credentials in the `dataview.yml` file. We will be changing this in future challenges by injecting dynamic credentials from Vault.
 
 Now we have a web server running, that can query the users in a database and display them in `json` format.
-

@@ -23,3 +23,4 @@ containers:
     PGPORT: 5432
 aws_accounts:
 - name: awsaccount
+  managed_policies: ["arn:aws:iam::aws:policy/AdministratorAccess"]

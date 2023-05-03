@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform solve the challenge.
 #
@@ -14,5 +14,15 @@ vault write auth/aws/config/client \
  access_key="$AWS_ACCESS_KEY_ID" \
  secret_key="$AWS_SECRET_ACCESS_KEY" \
  region=us-west-2
+
+echo "Create dataview policy"
+vault policy write dataview /root/dataview/dataview-policy.hcl
+
+echo "Solve: Configure the dataview role. Tie to the dataview policy and set the max_ttl to 1h"
+vault write auth/aws/role/dataview \
+  auth_type=iam \
+  policies=dataview \
+  max_ttl=1h \
+  bound_iam_principal_arn="arn:aws:iam::aws:policy/AdministratorAccess"
 
 exit 0

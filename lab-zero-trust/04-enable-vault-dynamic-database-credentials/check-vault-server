@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform check the challenge.
 #
@@ -6,6 +6,31 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the check script"
+echo "Checking if Vault Dynamic Database Secrets Engine is enabled"
+SECRETS_ENABLED=$(vault secrets list |grep database |awk -F"/" '{print $1}')
+if [[ $SECRETS_ENABLED == "database" ]] ; then
+    echo "Vault Dynamic Database Secrets Engine is enabled"
+else
+    echo "Vault Dynamic Database Secrets Engine is not enabled"
+    exit 1
+fi
+
+echo "Checking if Vault Dynamic Database Secrets Engine is configured"
+SECRETS_CONFIGURED=$(vault read database/config/users |grep plugin_name|awk '{print $2}')
+if [[ $SECRETS_CONFIGURED == "postgresql-database-plugin" ]] ; then
+    echo "Vault Dynamic Database Secrets Engine is configured"
+else
+    echo "Vault Dynamic Database Secrets Engine is not configured"
+    exit 1
+fi
+
+echo "Checking if Vault Dynamic Database Role is created"
+ROLE_CREATED=$(vault read database/roles/dataview |grep -i db_name |awk '{print $2}')
+if [[ $ROLE_CREATED == "users" ]] ; then
+    echo "Vault Dynamic Database Role is created"
+else
+    echo "Vault Dynamic Database Role is not created"
+    exit 1
+fi
 
 exit 0

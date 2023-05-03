@@ -17,12 +17,12 @@ if [[ "$vault_version" != "v1.13.0" ]]; then
 fi
 
 # Check Vault status
-# echo "Check: Vault Status"
-# vault_status=$(vault status |grep Sealed |awk '{print $2}')
+echo "Check: Vault Status"
+vault_status=$(vault status |grep Sealed |awk '{print $2}')
 
-# if [[ "$vault_status" != "false" ]]; then
-#   echo "Vault is not running"
-#   exit 1
-# fi
+if [[ "$vault_status" != "false" ]]; then
+  echo "Vault is not running"
+  exit 1
+fi
 
 exit 0

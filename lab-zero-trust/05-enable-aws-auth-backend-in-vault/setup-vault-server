@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform setup the challenge.
 #
@@ -11,12 +11,31 @@ echo "This is the setup script"
 echo "Running Vault Status Command"
 vault status
 
-echo ""
-echo VAULT_ADDR: $VAULT_ADDR
-echo VAULT_TOKEN: $VAULT_TOKEN
-echo HOSTNAME: $HOSTNAME
-echo AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-echo AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-echo ""
+echo "Creating a dataview code directory"
+mkdir -p /root/dataview
+
+echo "Place Dataview Vault Policy File"
+cat << EOF > /root/dataview/dataview-policy.hcl
+# Allow a token to renew itself
+path "auth/token/renew-self" {
+  capabilities = ["update"]
+}
+
+# Add list of leases presently applicable to any mount
+path "sys/leases/lookup" {
+  capabilities = ["list"]
+}
+
+# List accessor IDs of all generated tokens present in the Vault
+path "auth/token/accesors" {
+    capabilities = ["list"]
+}
+
+# Dataview Policy
+path "database/creds/dataview" {
+  capabilities = ["read", "list"]
+}
+
+EOF
 
 exit 0

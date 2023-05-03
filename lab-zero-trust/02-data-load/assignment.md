@@ -109,4 +109,4 @@ View the name, email, socialsecurity, and creditcard colums to view from the dat
 psql -h app-server -p 5432 -U postgres -d users -c "select name, email, socialsecurity, creditcard from users;"
 ```
 
-Notice that there is PII in this database.  This is a problem.  We will fix this in a future challenge!
+Awesome!  We now have data in the database. In the next challenge we'll startup a web server to query the database.
