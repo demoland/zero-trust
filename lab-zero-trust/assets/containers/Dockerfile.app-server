@@ -42,6 +42,7 @@ RUN service postgresql start
 
 RUN echo "Installing Dataview Service Script"
 COPY lab-zero-trust/assets/containers/dataview.service /etc/systemd/system/dataview.service
+COPY lab-zero-trust/assets/containers/dataview.yml /etc/systemd/system/dataview.yml
 
 RUN sudo systemctl daemon-reload
 RUN sudo systemctl enable dataview

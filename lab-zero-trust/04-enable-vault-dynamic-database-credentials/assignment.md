@@ -108,5 +108,4 @@ Switch to the app-server terminal.
 psql -h app-server -U $PGUSER -d users -c "select Name from users limit 5;"
 ```
 
-That's great.  But how would I use this in an application?  
-
+That's great.  But how would I use this in an application?

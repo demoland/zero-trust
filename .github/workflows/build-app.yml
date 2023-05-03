@@ -6,6 +6,7 @@ on:
     paths:
       - lab-zero-trust/assets/containers/Dockerfile.app-server
       - lab-zero-trust/assets/containers/dataview.service
+      - lab-zero-trust/assets/containers/dataview.yml
   pull_request:
     branches: [ "main" ]
     paths:

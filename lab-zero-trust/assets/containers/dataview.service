@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=root
 Group=root
-ExecStart=/usr/local/bin/dataview -database users -hostname app-server -port 5432 -password postgres
+ExecStart=/usr/local/bin/dataview -config-file /etc/dataview.yml
 Restart=on-failure
 RestartSec=5
 StartLimitInterval=0

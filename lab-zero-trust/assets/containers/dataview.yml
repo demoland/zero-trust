@@ -1,0 +1,10 @@
+---
+# This is the dataview configuration file. It is used to configure the dataview service.
+# The dataview service is used to provide a REST API to the database.
+
+username: "postgres"
+password: "postgres"
+host: "app-server"
+port: 5432
+dbName: "users"
+webPort: 8888
