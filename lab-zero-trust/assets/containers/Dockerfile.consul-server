@@ -22,6 +22,6 @@ RUN mkdir -p $CONSUL_DATA_DIR $CONSUL_CONFIG_DIR /root
 
 WORKDIR /root/
 RUN git clone https://github.com/hashicorp-education/learn-consul-get-started-vms.git
-WORKDIR /root/learn-consul-get-started-vms
+WORKDIR /root/learn-consul-get-started-vms/scripts
 
 RUN ./generate_consul_server_config.sh
