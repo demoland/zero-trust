@@ -1,0 +1,100 @@
+#!/bin/bash
+#
+# This script runs when the platform setup the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+echo "Setup: Creating the dataview directory"
+mkdir -p /root/dataview/
+
+echo "Setup: Create the Vault agent configuration file"
+cat << EOF > /root/dataview/vault-agent-dataview.hcl
+auto_auth {
+  method "aws" {
+    mount_path = "auth/aws"
+    config = {
+      type = "iam"
+      role = "dataview"
+    }
+  }
+
+  sink "file" {
+    config = {
+      path = "/root/dataview/vault-token-via-agent"
+    }
+  }
+}
+
+vault {
+  address = "http://vault-server:8200"
+}
+
+template {
+  source      = "/root/dataview/dataview-dynamic.tmpl"
+  destination = "/root/dataview/dataview-dynamic.yml"
+}
+
+service {
+  name = "dataview"
+  restart_on_change = true
+}
+
+EOF
+
+
+echo "Create the dataview template file"
+cat << EOF > /root/dataview/dataview-dynamic.tmpl
+{{ with secret "database/creds/dataview" }}
+---
+username: {{ .Data.username }}
+password: {{ .Data.password }}
+host: "app-server"
+port: 5432
+dbName: "users"
+webPort: 8888
+{{ end }}
+EOF
+
+cat << EOF > /etc/systemd/system/vault-agent.service
+[Unit]
+Description=HashiCorp Vault Agent for dataview app server
+After=network.target auditd.service 
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/vault agent -config  /root/dataview/vault-agent-dataview.hcl\
+  -log-level debug \
+  -log-file /var/log/vault-agent/vault-agent.log
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl stop dataview
+
+cat << EOF > /etc/systemd/system/dataview.service
+[Unit]
+Description=DataView Service for Getting Users
+After=network.target vault-agent.service
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/local/bin/dataview -config-file /root/dataview/dataview-dynamic.yml
+Restart=on-failure
+RestartSec=5
+StartLimitInterval=0
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+systemctl stop dataview
+systemctl stop vault-agent
+
+mkdir -p /var/log/vault-agent
+
+exit 0

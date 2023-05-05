@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+# This script runs when the platform check the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+
+echo "Check: Is Dataview running?"
+DATAVIEW_STATUS=$(systemctl status dataview |grep Active: |awk '{print $2}')
+
+if [[ $DATAVIEW_STATUS == "active" ]]; then
+    echo "Dataview is running"
+else
+    echo "Dataview is not running"
+    exit 1
+fi
+
+
+echo "Check: Is the Vault agent running?"
+VAULT_AGENT_STATUS=$(systemctl status vault-agent |grep Active: |awk '{print $2}')
+if [[ $VAULT_AGENT_STATUS == "active" ]]; then
+    echo "Vault agent is running"
+else
+    echo "Vault agent is not running"
+    exit 1
+fi
+
+exit 0

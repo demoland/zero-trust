@@ -30,7 +30,6 @@ fi
 
 
 
-
 # Check Vault AWS Auth Config
 echo "Check: Vault AWS Auth Config"
 VAULT_ROLE_CREATED=$(vault read auth/aws/role/dataview |grep ^policies |awk '{print $2}')

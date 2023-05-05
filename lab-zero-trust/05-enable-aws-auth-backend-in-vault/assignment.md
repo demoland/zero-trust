@@ -85,6 +85,7 @@ EOF
 ```
 
 Now write that policy to Vault:
+
 ```bash
 vault policy write dataview /root/dataview/dataview-policy.hcl
 ```
@@ -105,4 +106,16 @@ Try logging in to Vault with the AWS auth backend now. This authentication will 
 vault login -method=aws role=dataview access_key=$AWS_ACCESS_KEY_ID secret_key=$AWS_SECRET_ACCESS_KEY
 ```
 
-vault token lookup
+Last, run a `vault policy read` on the `dataview` policy to see what permissions it has.
+
+```bash
+vault policy read dataview
+```
+
+Now, access the credentials in `database/creds/dataview`:
+
+```bash
+vault read database/creds/dataview
+```
+
+In the next challenge we will use the Vault agent to manage these dynamic credentials and automatically renew them.

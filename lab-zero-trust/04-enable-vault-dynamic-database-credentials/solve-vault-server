@@ -12,7 +12,7 @@ vault secrets enable database
 echo "Configure Vault Dynamic Database Secrets Engine"
 vault write database/config/users \
     plugin_name="postgresql-database-plugin" \
-    allowed_roles="dataviewer" \
+    allowed_roles="dataview" \
     connection_url="postgresql://{{username}}:{{password}}@app-server:5432/users" \
     username="postgres" \
     password="postgres"
