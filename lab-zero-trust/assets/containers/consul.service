@@ -9,7 +9,8 @@ Group=root
 Environment="DATACENTER=dc1"
 Environment="CONSUL_DATA_DIR=/etc/consul/data"
 Environment="CONSUL_CONFIG_DIR=/etc/consul/config"
-ExecStart=/usr/local/bin/consul consul agent -node=consul -config-dir=${CONSUL_CONFIG_DIR}
+Environment="CONSUL_LOG_DIR"=/etc/consul/logs
+ExecStart=/usr/local/bin/consul agent -node=consul -config-dir=${CONSUL_CONFIG_DIR} -log-file=${CONSUL_LOG_DIR}
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM
 Restart=on-failure

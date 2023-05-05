@@ -29,6 +29,7 @@ containers:
     DATACENTER: dc1
     CONSUL_DATA_DIR: /etc/consul/data
     CONSUL_CONFIG_DIR: /etc/consul/config
+    CONSUL_LOG_DIR: /etc/consul/logs
 aws_accounts:
 - name: awsaccount
   managed_policies: ["arn:aws:iam::aws:policy/AdministratorAccess"]
