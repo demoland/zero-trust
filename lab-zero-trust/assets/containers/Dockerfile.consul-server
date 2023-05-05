@@ -21,7 +21,7 @@ COPY lab-zero-trust/assets/containers/consul.service /etc/systemd/system/consul.
 RUN mkdir -p $CONSUL_DATA_DIR $CONSUL_CONFIG_DIR /root
 
 WORKDIR /root/
-RUN git clone https://github.com/hashicorp-education/learn-consul-get-started-vms.git
+RUN git clone https://github.com/demoland/learn-consul-get-started-vms.git
 WORKDIR /root/learn-consul-get-started-vms/scripts
 
 RUN ./generate_consul_server_config.sh
