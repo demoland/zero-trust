@@ -1,0 +1,27 @@
+# 
+FROM ubuntu:20.04
+
+# Install required packages
+RUN apt-get update
+RUN apt-get install -y unzip wget jq systemctl git
+
+# Install Vault
+ENV CONSUL_VERSION=1.15.2
+ENV DATACENTER="dc1"
+ENV CONSUL_DATA_DIR="/etc/consul/data"
+ENV CONSUL_CONFIG_DIR="/etc/consul/config"
+
+WORKDIR /tmp
+RUN wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip
+RUN unzip consul_${CONSUL_VERSION}_linux_amd64.zip
+RUN mv consul /usr/local/bin/
+RUN chmod -R 755 /usr/local/bin/consul
+COPY lab-zero-trust/assets/containers/consul.service /etc/systemd/system/consul.service
+
+RUN mkdir -p $CONSUL_DATA_DIR $CONSUL_CONFIG_DIR /root
+
+WORKDIR /root/
+RUN git clone https://github.com/hashicorp-education/learn-consul-get-started-vms.git
+WORKDIR /root/learn-consul-get-started-vms
+
+RUN ./generate_consul_server_config.sh

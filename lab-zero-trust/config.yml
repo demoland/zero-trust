@@ -21,6 +21,14 @@ containers:
     PGDB: users
     PGHOST: app-server
     PGPORT: 5432
+- name: consul-server
+  image: danfedick/consul-server:latest
+  shell: /bin/bash
+  memory: 512
+  environment:
+    DATACENTER: dc1
+    CONSUL_DATA_DIR: /etc/consul/data
+    CONSUL_CONFIG_DIR: /etc/consul/config
 aws_accounts:
 - name: awsaccount
   managed_policies: ["arn:aws:iam::aws:policy/AdministratorAccess"]
