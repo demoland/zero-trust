@@ -10,7 +10,7 @@ ENV TIMEZONE="UTC"
 
 # Install required packages
 RUN apt-get update
-RUN apt-get install -y unzip curl wget jq sudo systemctl inetutils-ping 
+RUN apt-get install -y unzip curl wget jq sudo systemctl inetutils-ping systemd
 
 # Install PostgreSQL and necessary packages
 RUN echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections && \

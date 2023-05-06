@@ -3,7 +3,7 @@ FROM ubuntu:20.04
 
 # Install required packages
 RUN apt-get update
-RUN apt-get install -y unzip wget jq systemctl git
+RUN apt-get install -y unzip curl wget jq sudo systemctl inetutils-ping systemd
 
 # Install Vault
 ENV CONSUL_VERSION=1.15.2

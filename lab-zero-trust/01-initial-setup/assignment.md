@@ -40,7 +40,7 @@ vault version
 Run the following command to start Vault in development mode:
 
 ```bash
-systemctl start  vault 
+systemctl start  vault
 ```
 
 Check to see if Vault is running.
