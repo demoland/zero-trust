@@ -3,7 +3,10 @@ FROM ubuntu:20.04
 
 # Install required packages
 RUN apt-get update
-RUN apt-get install -y unzip curl wget jq sudo systemctl inetutils-ping systemd
+RUN apt-get install -y unzip curl wget jq sudo systemctl inetutils-ping
+RUN echo "tzdata tzdata/Areas select Etc" | sudo debconf-set-selections && \
+    echo "tzdata tzdata/Zones/Etc select $TIMEZONE" | sudo debconf-set-selections && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y systemd 
 
 # Install Vault
 ENV CONSUL_VERSION=1.15.2
