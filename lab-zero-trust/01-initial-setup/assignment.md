@@ -40,7 +40,7 @@ vault version
 Run the following command to start Vault in development mode:
 
 ```bash
-/usr/local/bin/vault server -dev -dev-root-token-id=${VAULT_TOKEN} -dev-listen-address=vault-server:8200 &
+systemctl start  vault 
 ```
 
 Check to see if Vault is running.
