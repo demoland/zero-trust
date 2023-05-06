@@ -34,3 +34,15 @@ timelimit: 600
 In the `Consul-Code` tab, let's look at the consul configuration used in this challenge.
 
 All of the `*.hcl` files in this directory are concatenated at runtime to create the consul configuration file.
+
+First thing, let's start consul!
+
+```bash
+systemctl start consul
+```
+
+To see what command arguments were used to start consul, run the following command:
+
+```bash
+cat /etc/systemd/system/consul.service
+```
