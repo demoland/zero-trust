@@ -3,15 +3,10 @@ slug: install-and-configure-consul
 id: gmv2umlf5rnp
 type: challenge
 title: Install and Configure Consul
-teaser: In this challenge we will install and configure a consul-server as the service
-  registry for our application.
+teaser: In this challenge we will install and configure a consul-server as the service registry for our application.
 notes:
 - type: text
-  contents: Consul is at the heart of our Zero Trust machine-to-machine communication.  Consul
-    affords us PKI infrastructure to secure our communications and service discovery
-    to allow our applications to find each other.  Consul also provides a mechanism
-    for our applications to register their health and for Consul to monitor the health
-    of our applications.  Consul is a critical component of our Zero Trust architecture.
+  contents: Consul is at the heart of our Zero Trust machine-to-machine communication.  Consul affords us PKI infrastructure to secure our communications and service discovery to allow our applications to find each other.  Consul also provides a mechanism for our applications to register their health and for Consul to monitor the health of our applications.  Consul is a critical component of our Zero Trust architecture.
 tabs:
 - title: Consul-Server
   type: terminal
