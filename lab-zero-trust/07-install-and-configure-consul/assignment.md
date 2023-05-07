@@ -137,7 +137,7 @@ ui_config {
 EOF
 ```
 
-### Start the Consul Server:
+### Start the Consul Server
 
 When consul starts, it will read all the files in the `/etc/consul.d` directory.
 Let's review the files in this directory:
