@@ -30,7 +30,30 @@ else
   exit 1
 fi
 
+echo "Check: Does Server file exist and has content?"
+if [[ -f /etc/consul.d/server.hcl ]] && [[ -s /etc/consul.d/server.hcl ]]; then
+  echo "Server file exists and has the following content:"
+  cat /etc/consul.d/server.hcl
+else
+  echo "Server file does not exist"
+  exit 1
+fi
 
+echo "Check: Is Consul Service running?"
+CONSUL_STAT=$(systemctl status consul  |grep Active: |awk '{print $2}')
+if [[ $CONSUL_STAT == "active" ]]; then
+  echo "Consul Service is running"
+else
+  echo "Consul Service is not running"
+  exit 1
+fi
 
+echo "Check: Is Consul ACL bootstrapped?"
+if [[ -f /etc/consul.d/consul-bootstrap-token.out ]]; then
+  echo "Consul ACL is bootstrapped"
+else
+  echo "Consul ACL is not bootstrapped"
+  exit 1
+fi
 
 exit 0

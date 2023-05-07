@@ -124,6 +124,7 @@ EOF
 
 ```bash
 cat << EOF >> /etc/consul.d/server.hcl
+
 ui_config {
   enabled = true
 }

@@ -6,6 +6,60 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the solve script"
+echo "Enable Gossip Encryption"
+CONSUL_GOSSIP_KEY=$(consul keygen)
+
+cat << EOF > /etc/consul.d/consul-gossip-encryption.hcl
+encrypt = "$CONSUL_GOSSIP_KEY"
+EOF
+
+echo "Create Consul certs dir"
+mkdir -p /etc/consul.d/certs
+cd /etc/consul.d/certs
+
+consul tls ca create
+
+consul tls cert create -server -dc dc1 -domain consul
+
+echo "Create Consul server config"
+sudo touch /etc/consul.d/server.hcl
+sudo chown --recursive consul:consul /etc/consul.d
+sudo chmod 640 /etc/consul.d/server.hcl
+
+cat << EOF >> /etc/consul.d/server.hcl
+server = true
+bootstrap_expect = 1
+EOF
+
+cat << EOF >> /etc/consul.d/server.hcl
+bind_addr = 0.0.0.0
+client_addr = 0.0.0.0
+EOF
+
+cat << EOF >> /etc/consul.d/server.hcl
+connect {
+  enabled = true
+}
+
+addresses {
+  grpc = "127.0.0.1"
+}
+
+ports {
+  grpc  = 8502
+}
+EOF
+
+cat << EOF >> /etc/consul.d/server.hcl
+ui_config {
+  enabled = true
+}
+EOF
+
+echo "Start the Consul Server"
+systemctl start consul
+
+echo "Bootstrap the Consul ACL"
+consul acl bootstrap > /etc/consul.d/consul-bootstrap-token.out
 
 exit 0
