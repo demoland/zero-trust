@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform check the challenge.
 #
@@ -6,6 +6,31 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the check script"
+echo "Check: Consul configuration directory exists"
+if [[ -d /etc/consul.d ]]; then
+  echo "Consul configuration directory exists"
+else
+  echo "Consul configuration directory does not exist"
+  exit 1
+fi
+
+echo "Check: Does the Consul Gossip file exist?"
+if [[ -f /etc/consul.d/consul-gossip-encryption.hcl ]]; then
+  echo "Consul Gossip file exists"
+else
+  echo "Consul Gossip file does not exist"
+  exit 1
+fi
+
+echo "Check Consul TLS Certs are created:" 
+if [[ -f /etc/consul.d/certs/dc1-server-consul-0.pem ]] && [[ -f /etc/consul.d/certs/dc1-server-consul-0-key.pem ]] && [[ -f /etc/consul.d/certs/consul-agent-ca.pem ]] && [[ -f /etc/consul.d/certs/consul-agent-ca-key.pem ]]; then
+  echo "Consul TLS Certs are created"
+else
+  echo "Consul TLS Certs are not created"
+  exit 1
+fi
+
+
+
 
 exit 0

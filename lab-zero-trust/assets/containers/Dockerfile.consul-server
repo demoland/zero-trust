@@ -28,4 +28,6 @@ WORKDIR /root/
 RUN git clone https://github.com/demoland/learn-consul-get-started-vms.git
 WORKDIR /root/learn-consul-get-started-vms/scripts
 
-RUN ./generate_consul_server_config.sh
+RUN sudo useradd consul
+RUN sudo groupadd consul
+RUN sudo usermod -aG consul consul

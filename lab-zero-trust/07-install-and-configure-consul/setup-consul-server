@@ -6,6 +6,7 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the setup script"
+mkdir -p /etc/consul.d
+set-workdir /etc/consul.d
 
 exit 0
