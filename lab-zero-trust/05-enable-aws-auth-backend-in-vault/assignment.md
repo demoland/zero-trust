@@ -3,7 +3,9 @@ slug: enable-aws-auth-backend-in-vault
 id: kozci6glywpy
 type: challenge
 title: Enable AWS Auth Backend in Vault
-teaser: Enable the AWS auth backend in Vault to simplify access control for your applications running on AWS. By mapping AWS IAM principals to Vault roles, you can use existing AWS access keys to authenticate and authorize access to secrets in Vault.
+teaser: Enable the AWS auth backend in Vault to simplify access control for your applications
+  running on AWS. By mapping AWS IAM principals to Vault roles, you can use existing
+  AWS access keys to authenticate and authorize access to secrets in Vault.
 notes:
 - type: text
   contents: |-
