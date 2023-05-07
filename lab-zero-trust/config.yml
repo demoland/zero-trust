@@ -28,7 +28,7 @@ containers:
   environment:
     DATACENTER: dc1
     CONSUL_DATA_DIR: /etc/consul.d/data
-    CONSUL_CONFIG_DIR: /etc/consul.d/config
+    CONSUL_CONFIG_DIR: /etc/consul.d
     CONSUL_LOG_DIR: /etc/consul.d/logs
     CONSUL_LOG_FILE: /etc/consul.d/logs/consul-server.log
     CONSUL_CACERT: /etc/consul.d/certs/consul-agent-ca.pem

@@ -9,7 +9,7 @@ RUN apt-get install -y unzip curl wget jq sudo systemctl inetutils-ping git
 ENV CONSUL_VERSION=1.15.2
 ENV DATACENTER="dc1"
 ENV CONSUL_DATA_DIR="/etc/consul.d/data"
-ENV CONSUL_CONFIG_DIR="/etc/consul.d/config"
+ENV CONSUL_CONFIG_DIR="/etc/consul.d"
 ENV CONSUL_LOG_DIR="/etc/consul.d/logs"
 ENV CONSUL_LOG_FILE="/etc/consul.d/logs/consul-server.log"
 

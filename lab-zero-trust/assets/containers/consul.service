@@ -8,7 +8,7 @@ User=consul
 Group=consul
 Environment="DATACENTER=dc1"
 Environment="CONSUL_DATA_DIR=/etc/consul.d/data"
-Environment="CONSUL_CONFIG_DIR=/etc/consul.d/config"
+Environment="CONSUL_CONFIG_DIR=/etc/consul.d"
 Environment="CONSUL_LOG_FILE=/etc/consul.d/logs/consul-server.log"
 ExecStart=/usr/local/bin/consul agent -node=consul-server -config-dir=${CONSUL_CONFIG_DIR} -data-dir=${CONSUL_DATA_DIR}
 StandardOutput=append:$CONSUL_LOG_FILE
