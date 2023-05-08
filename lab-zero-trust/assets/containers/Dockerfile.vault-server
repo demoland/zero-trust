@@ -13,3 +13,9 @@ RUN unzip vault_${VAULT_VERSION}_linux_amd64.zip
 RUN mv vault /usr/local/bin/
 RUN chmod -R 755 /usr/local/bin/vault
 COPY lab-zero-trust/assets/containers/vault.service /etc/systemd/system/vault.service
+
+WORKDIR /tmp
+RUN wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL_VERSION}_linux_amd64.zip
+RUN unzip consul_${CONSUL_VERSION}_linux_amd64.zip
+RUN mv consul /usr/local/bin/
+RUN chmod -R 755 /usr/local/bin/consul
