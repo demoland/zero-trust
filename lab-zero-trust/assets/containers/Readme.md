@@ -29,3 +29,7 @@
 ## Notes
 
 **TODO**: Will need to move this into a Github Action to build and push the images to Docker Hub automatically:
+
+### Consul Installation and Configuration
+
+- [Deployment Guide](https://developer.hashicorp.com/consul/tutorials/production-deploy/deployment-guide)

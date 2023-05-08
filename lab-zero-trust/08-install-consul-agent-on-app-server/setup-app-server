@@ -7,7 +7,7 @@
 #
 
 
-mkdir -p /etc/consul.d
-set-workdir /etc/consul.d
+mkdir -p /etc/consul.d/certs
+set-workdir /etc/consul.d/
 
 exit 0

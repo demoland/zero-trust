@@ -42,6 +42,12 @@ encrypt = "$CONSUL_GOSSIP_KEY"
 EOF
 ```
 
+### Write the Gossip key to the Vault cluster for the App server to use later. 
+
+```hcl
+vault kv put secret/consul/gossip key=$CONSUL_GOSSIP_KEY
+```
+
 ### Configure Consul Encryption
 
 * Generate the TLS certificates for RPC encryption
@@ -77,6 +83,14 @@ You should now have 4 files:
 -rw-r--r-- 1 root root 1074 May  6 10:33 consul-agent-ca.pem
 -rw------- 1 root root  227 May  6 10:33 dc1-server-consul-0-key.pem
 -rw-r--r-- 1 root root  964 May  6 10:33 dc1-server-consul-0.pem
+```
+
+* Write the root CA certificate that you generated so the consul clients can use it to verify the server certificate.
+
+```bash
+vault kv put secret/consul/ca_file  key=@/etc/consul.d/certs/consul-agent-ca.pem
+vault kv put secret/consul/cert_file key=@/etc/consul.d/certs/dc1-server-consul-0.pem
+vault kv put secret/consul/key_file key=@/etc/consul.d/certs/dc1-server-consul-0-key.pem
 ```
 
 ### Configure the consul server

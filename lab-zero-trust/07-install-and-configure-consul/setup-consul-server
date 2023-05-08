@@ -9,4 +9,5 @@
 mkdir -p /etc/consul.d
 set-workdir /etc/consul.d
 
-exit 0
+# service vault start 
+# exit 0

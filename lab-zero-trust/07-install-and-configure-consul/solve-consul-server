@@ -13,6 +13,9 @@ cat << EOF > /etc/consul.d/consul-gossip-encryption.hcl
 encrypt = "$CONSUL_GOSSIP_KEY"
 EOF
 
+echo "Add gossip to Vault"
+vault kv put secret/consul/gossip key=$CONSUL_GOSSIP_KEY
+
 echo "Create Consul certs dir"
 mkdir -p /etc/consul.d/certs
 cd /etc/consul.d/certs
@@ -20,6 +23,11 @@ cd /etc/consul.d/certs
 consul tls ca create
 
 consul tls cert create -server -dc dc1 -domain consul
+
+echo "Write certs to Vault"
+vault kv put secret/consul/ca_file  key=@/etc/consul.d/certs/consul-agent-ca.pem
+vault kv put secret/consul/cert_file key=@/etc/consul.d/certs/dc1-server-consul-0.pem
+vault kv put secret/consul/key_file key=@/etc/consul.d/certs/dc1-server-consul-0-key.pem
 
 echo "Create Consul server config"
 sudo touch /etc/consul.d/server.hcl
