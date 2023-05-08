@@ -26,14 +26,10 @@ RUN unzip consul_${CONSUL_VERSION}_linux_amd64.zip
 RUN mv consul /usr/local/bin/
 RUN chmod -R 755 /usr/local/bin/consul
 
-COPY lab-zero-trust/assets/containers/consul.service /etc/systemd/system/consul.service
+COPY lab-zero-trust/assets/containers/consul.service /tmp/consul.service
 
 RUN mkdir -p $CONSUL_DATA_DIR $CONSUL_CONFIG_DIR $CONSUL_LOG_DIR
 RUN touch $CONSUL_LOG_FILE
-
-WORKDIR /root/
-RUN git clone https://github.com/demoland/learn-consul-get-started-vms.git
-WORKDIR /root/learn-consul-get-started-vms/scripts
 
 RUN sudo useradd consul
 RUN sudo usermod -aG consul consul

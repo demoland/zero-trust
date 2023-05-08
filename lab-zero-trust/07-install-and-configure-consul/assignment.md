@@ -155,6 +155,7 @@ EOF
 * Enable TLS:
 
 ```bash
+cat << EOF >> /etc/consul.d/server.hcl
 
 tls {
    defaults {
