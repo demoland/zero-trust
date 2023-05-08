@@ -48,10 +48,11 @@ As a refresher, let's read the database credentials from the dynamic path:
 vault read database/creds/dataview
 ```
 
-Now, let's review the vault agent start script:
+Now, let's review the vault agent and dataview start scripts:
 
 ```bash
 cat /etc/systemd/system/dataview.service
+cat /etc/systemd/system/vault-agent.service
 ```
 
 The Vault agent is started with the following command:
@@ -60,20 +61,12 @@ The Vault agent is started with the following command:
 systemctl start vault-agent
 ```
 
+```bash
+systemctl status vault-agent
+```
+
 Now we should see a new file generated in the `App-Code` tab:
 It will be called `dataview-dynamic.yml`
-
-Tail the vault-agent logs:
-
-```bash
-tail -f /var/log/vault-agent/*.log
-```
-
-Let's review the dataview service script:
-
-```bash
-cat /etc/systemd/system/dataview.service
-```
 
 You can see that we've changed the configuration file away from the `/etc/dataview.yml` to the new file: `/root/dataview/dataview-dynamic.yml`
 
@@ -83,10 +76,10 @@ Old dataview config file:
 cat /etc/dataview.yml
 ```
 
-New dataview config file:
+New dataview config file template:
 
 ```bash
-cat /root/dataview/dataview-dynamic.yml
+cat /root/dataview/dataview-dynamic.tmpl
 ```
 
 Let's start the dataview service now that it's configured to use the dynamic credentials:

@@ -21,17 +21,17 @@ containers:
     PGDB: users
     PGHOST: app-server
     PGPORT: 5432
-    DATACENTER: dc1
-    DOMAIN: consul
-    CONSUL_DATA_DIR: /etc/consul.d/data
-    CONSUL_CONFIG_DIR: /etc/consul.d
-    CONSUL_LOG_DIR: /etc/consul.d/logs
-    CONSUL_LOG_FILE: /etc/consul.d/logs/consul-server.log
-    CONSUL_HTTP_SSL: true
-    CONSUL_CACERT: /etc/consul.d/certs/consul-agent-ca.pem
-    CONSUL_TLS_SERVER_NAME: consul-server.consul.dc1
-    CONSUL_FQDN_ADDR: consul-server 
-    CONSUL_HTTP_ADDR: https://consul-server:8443
+    # DATACENTER: dc1
+    # DOMAIN: consul
+    # # CONSUL_DATA_DIR: /etc/consul.d/data
+    # CONSUL_CONFIG_DIR: /etc/consul.d
+    # CONSUL_LOG_DIR: /etc/consul.d/logs
+    # CONSUL_LOG_FILE: /etc/consul.d/logs/consul-server.log
+    # CONSUL_HTTP_SSL: true
+    # CONSUL_CACERT: /etc/consul.d/certs/consul-agent-ca.pem
+    # CONSUL_TLS_SERVER_NAME: consul-server.consul.dc1
+    # CONSUL_FQDN_ADDR: consul-server 
+    # CONSUL_HTTP_ADDR: https://consul-server:8443
 
 - name: consul-server
   image: danfedick/consul-server:latest
