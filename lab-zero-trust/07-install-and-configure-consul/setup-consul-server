@@ -28,7 +28,7 @@ ConditionFileNotEmpty=${CONSUL_CONFIG_DIR}/server.hcl
 EnvironmentFile=-${CONSUL_CONFIG_DIR}/consul.env
 User=consul
 Group=consul
-ExecStart=/usr/bin/consul agent -config-dir=${CONSUL_CONFIG_DIR}
+ExecStart=/usr/local/bin/consul agent -config-dir=${CONSUL_CONFIG_DIR}
 ExecReload=/bin/kill --signal HUP $MAINPID
 KillMode=process
 KillSignal=SIGTERM

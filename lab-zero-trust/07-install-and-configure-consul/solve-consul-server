@@ -19,7 +19,7 @@ encrypt = "${CONSUL_GOSSIP_KEY}"
 EOF
 
 echo "Add gossip to Vault"
-vault kv put secret/consul/gossip key=${CONSUL_GOSSIP_KEY
+vault kv put secret/consul/gossip key=${CONSUL_GOSSIP_KEY}
 
 echo "Create Consul certs dir"
 mkdir -p ${CONSUL_CERT_DIR}

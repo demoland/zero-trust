@@ -82,6 +82,24 @@ New dataview config file template:
 cat /root/dataview/dataview-dynamic.tmpl
 ```
 
+This config template creates the following file:
+
+```bash,nocopy
+/root/dataview/dataview-dynamic.yml
+```
+
+The Vault agent is started with the following command:
+
+```bash
+systemctl start vault-agent
+```
+
+Now check if the vault agent is running:
+
+```bash
+systemctl status vault-agent
+```
+
 Let's start the dataview service now that it's configured to use the dynamic credentials:
 
 ```bash

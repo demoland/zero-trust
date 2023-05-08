@@ -7,7 +7,7 @@
 #
 
 echo "Setup: Creating the dataview directory"
-mkdir -p /root/dataview/
+mkdir -p /root/dataview/  /var/log/vault-agent
 
 echo "Setup: Create the Vault agent configuration file"
 cat << EOF > /root/dataview/vault-agent-dataview.hcl
@@ -60,11 +60,10 @@ EOF
 cat << EOF > /etc/systemd/system/vault-agent.service
 [Unit]
 Description=HashiCorp Vault Agent for dataview app server
-After=network.target auditd.service 
+After=network.target 
 
 [Service]
-Type=simple
-ExecStart=/usr/local/bin/vault agent -config  /root/dataview/vault-agent-dataview.hcl\
+ExecStart=/usr/local/bin/vault agent -config  /root/dataview/vault-agent-dataview.hcl \
   -log-level debug \
   -log-file /var/log/vault-agent/vault-agent.log
 
@@ -95,6 +94,5 @@ systemctl daemon-reload
 systemctl stop dataview
 systemctl stop vault-agent
 
-mkdir -p /var/log/vault-agent
 
 exit 0
