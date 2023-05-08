@@ -35,9 +35,18 @@ timelimit: 600
 
 Gossip is used to maintain a cluster membership list, to propagate health checks, and to disseminate configuration changes.  This data is encrypted using a gossip encryption key.  Let's create the gossip encryption key and generate the `consul-gossip-encryption.hcl` file.
 
+Set environment variables to use in the rest of the workflow:
 ```bash
-CONSUL_GOSSIP_KEY=$(consul keygen)
-cat << EOF > /etc/consul.d/consul-gossip-encryption.hcl
+export DOMAIN="opengov.co"
+export NODENAME="consul-server"
+export DATACENTER="dc1"
+export CONSUL_CONFIG_DIR="/etc/consul.d"
+export CONSUL_CERT_DIR="/etc/consul.d/certs"
+```
+
+```bash
+export CONSUL_GOSSIP_KEY=$(consul keygen)
+cat << EOF > ${CONSUL_CONFIG_DIR}/consul-gossip-encryption.hcl
 encrypt = "$CONSUL_GOSSIP_KEY"
 EOF
 ```
@@ -59,38 +68,38 @@ Consul uses TLS to encrypt the RPC communication between consul servers. The RPC
 Create the Certs directory:
 
 ```bash
-mkdir -p /etc/consul.d/certs
-cd /etc/consul.d/certs
+mkdir -p ${CONSUL_CERT_DIR}
+cd ${CONSUL_CERT_DIR}
 ```
 
 Create the CA:
 
 ```bash
-consul tls ca create
+consul tls ca create -domain ${DOMAIN} 
 ```
 
 * Now, Create the certificates for the consul server (This would be done multiple times if you had multiple consul servers)
 
 ```bash
-consul tls cert create -server -dc dc1 -domain consul
+consul tls cert create -server -dc ${DATACENTER} -domain ${DOMAIN} -server -node ${NODENAME}
 ```
 
 You should now have 4 files:
 **Example:**
 
 ```bash,nocopy
--rw------- 1 root root  227 May  6 10:33 consul-agent-ca-key.pem
--rw-r--r-- 1 root root 1074 May  6 10:33 consul-agent-ca.pem
--rw------- 1 root root  227 May  6 10:33 dc1-server-consul-0-key.pem
--rw-r--r-- 1 root root  964 May  6 10:33 dc1-server-consul-0.pem
+-rw------- 1 root root  227 May  6 10:33 ${DOMAIN}-agent-ca.pem
+-rw-r--r-- 1 root root 1074 May  6 10:33 ${DOMAIN}-agent-ca-key.pem
+-rw------- 1 root root  227 May  6 10:33 ${DATACENTER}-server-${DOMAIN}-0.pem
+-rw-r--r-- 1 root root  964 May  6 10:33 ${DATACENTER}-server-${DOMAIN}-0-key.pem
 ```
 
 * Write the root CA certificate that you generated so the consul clients can use it to verify the server certificate.
 
 ```bash
-vault kv put secret/consul/ca_file  key=@/etc/consul.d/certs/consul-agent-ca.pem
-vault kv put secret/consul/cert_file key=@/etc/consul.d/certs/dc1-server-consul-0.pem
-vault kv put secret/consul/key_file key=@/etc/consul.d/certs/dc1-server-consul-0-key.pem
+vault kv put secret/consul/ca_file  key=@${CONSUL_CERT_DIR}/${DOMAIN}-agent-ca.pem
+vault kv put secret/consul/cert_file key=@${CONSUL_CERT_DIR}/${DATACENTER}-server-${DOMAIN}-0.pem
+vault kv put secret/consul/key_file key=@${CONSUL_CERT_DIR}/${DATACENTER}-server-${DOMAIN}-0-key.pem
 ```
 
 ### Configure the consul server
@@ -98,53 +107,57 @@ vault kv put secret/consul/key_file key=@/etc/consul.d/certs/dc1-server-consul-0
 * Create the consul server configuration file
 
 ```bash
-sudo touch /etc/consul.d/server.hcl
-sudo chown --recursive consul:consul /etc/consul.d
-sudo chmod 640 /etc/consul.d/server.hcl
+sudo touch ${CONSUL_CONFIG_DIR}/server.hcl
+sudo chown --recursive consul:consul ${CONSUL_CERT_DIR}
+sudo chmod 640 ${CONSUL_CONFIG_DIR}/server.hcl
 ```
 
-* Enable Consul Server and Bootstrap Expect
+* Enable Consul Server:
 
 ```bash
-cat << EOF >> /etc/consul.d/server.hcl
+cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
 server = true
-# bootstrap_expect = 1
 EOF
 ```
 
 * Setup Bind and client IP address to listen on the main IP interface:
 
 ```bash
-cat << EOF >> /etc/consul.d/server.hcl
+cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
 bind_addr = "0.0.0.0"
 client_addr = "0.0.0.0"
+domain = "${DOMAIN}"
 EOF
+```
+
+* Enable Consul Logs:
+Consul logs can be set in the configuration file as follows:
+
+```bash
+cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
+log_level = "INFO"
+log_file = "${CONSUL_CONFIG_DIR}/logs/consul.log"
+EOF
+
 ```
 
 * Enable Consul Connect:
 Consul connect uses Envoy as the reverse proxy between services.  Consul connect also provides service segmentation, which allows us to control which services can communicate with each other.  This is a critical component of our Zero Trust architecture. This communication happens via GRPC.  We need to enable GRPC and set the port to 8502.
 
 ```bash
-cat << EOF >> /etc/consul.d/server.hcl
+cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
 
 connect {
   enabled = true
 }
 
-addresses {
-  grpc = "127.0.0.1"
-}
-
-ports {
-  grpc  = 8502
-}
 EOF
 ```
 
 * Enable the Consul UI. This will allow us to view the Consul UI in the browser.
 
 ```bash
-cat << EOF >> /etc/consul.d/server.hcl
+cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
 
 ui_config {
   enabled = true
@@ -152,16 +165,35 @@ ui_config {
 EOF
 ```
 
-* Enable TLS:
+* Enable Consul Connect:
+enabling service mesh for your Consul cluster. By default, service is disabled. Enabling service mesh requires changing the configuration of only your Consul servers (not client agents).
 
 ```bash
 cat << EOF >> /etc/consul.d/server.hcl
+connect {
+  enabled = true
+}
+
+addresses {
+  grpc = "0.0.0.0"
+}
+
+ports {
+  grpc_tls  = 8503
+}
+EOF
+```
+
+* Enable TLS:
+
+```bash
+cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
 
 tls {
    defaults {
-      ca_file = "${CONSUL_CONFIG_DIR}/certs/consul-agent-ca.pem"
-      cert_file = "${CONSUL_CONFIG_DIR}/certs/dc1-server-consul-0.pem"
-      key_file = "${CONSUL_CONFIG_DIR}/certs/dc1-server-consul-0-key.pem"
+      ca_file = "${CONSUL_CERT_DIR}/opengov.co-agent-ca.pem"
+      cert_file = "${CONSUL_CERT_DIR}/dc1-server-opengov.co-0.pem"
+      key_file = "${CONSUL_CERT_DIR}/dc1-server-opengov.co-0-key.pem"
 
       verify_incoming = true
       verify_outgoing = true
@@ -174,6 +206,8 @@ tls {
 auto_encrypt {
   allow_tls = true
 }
+
+EOF
 ```
 
 ### Start the Consul Server
@@ -186,6 +220,8 @@ Let's review the files in this directory:
 * Now, let's start the consul server:
 
 ```bash
+cp /tmp/consul.service /etc/systemd/system/consul.service
+systemctl daemon-reload
 systemctl start consul
 ```
 
@@ -194,28 +230,6 @@ systemctl start consul
 ```bash
 systemctl status consul
 ```
-
-<!-- ### Bootstrap the ACL system
-
-The last step before we can interact with the Consul server is to bootstrap the Consul ACLs.   This will create the initial token and policy that we will use to configure our consul server.
-
-This bootstrap token should be stored in an encrypted vault. For the purposes of this lab, we will store it in a file.
-
-```bash
-consul acl bootstrap > /etc/consul.d/consul-bootstrap-token.out
-```
-
-The response normally looks like this but we are saving to a file for use later.
-
-```bash,nocopy
-AccessorID:       687969a7-a840-bfd9-4adb-43a447d4237c
-SecretID:         13c2c45c-59c9-039d-cb25-89e0ea05e3b1
-Description:      Bootstrap Token (Global Management)
-Local:            false
-Create Time:      2023-05-07 09:20:21.933822946 +0000 UTC
-Policies:
-   00000000-0000-0000-0000-000000000001 - global-management
-``` -->
 
 * Review the Consul UI.
 

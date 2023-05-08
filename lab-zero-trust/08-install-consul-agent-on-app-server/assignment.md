@@ -7,8 +7,8 @@ teaser: Install and configure the Consul client for the dataview and postgres-db
   to automatically register with the Consul server.
 notes:
 - type: text
-  contents: By using Consul client to register your local services and benefit from
-    automated service discovery and monitoring.  In a dynamic envisonment, having
+  contents: By using Consul client to register your local services you benefit from
+    automated service discovery and monitoring.  In a dynamic environment, having
     services easily discovered by other services, makes it simpler to establish connections
     and maintain communication between different parts of your system. Additionally,
     Consul provides a range of health checking capabilities that can help you quickly
@@ -36,18 +36,28 @@ Install Consul on App-Server
 
 We're going to start the Consul agent on the `app-server` node.  Then we'll register the dataview and postgres-db services with the Consul server.
 
+* Set Consul Environment variables: 
+
+```bash
+export DOMAIN="opengov.co"
+export NODENAME="app-server"
+export DATACENTER="dc1"
+export CONSUL_CONFIG_DIR="/etc/consul.d"
+export CONSUL_CERT_DIR="${CONSUL_CONFIG_DIR}/certs"
+```
+
 * We'll start out by creating the Consul agent configuration file:
 
 In the `app-server` terminal, create the Consul agent configuration file:
 
 ```bash
-vault kv get -format=json secret/consul/ca_file | jq -r .data.data.key > /etc/consul.d/certs/consul-agent-ca.pem
+vault kv get -format=json secret/consul/ca_file | jq -r .data.data.key > ${CONSUL_CERT_DIR}/consul-agent-ca.pem
 ```
 
 First, let's define the gossip encryption file.
 
 ```bash
-cat << EOF > /etc/consul.d/consul-agent.hcl
+cat << EOF > ${CONSUL_CONFIG_DIR}/consul-gossip-encryption.hcl
 encrypt = "$(vault kv get -format=json secret/consul/gossip | jq -r .data.data.key)"
 EOF
 ```
@@ -55,9 +65,11 @@ EOF
 consul agent configuration cluster boundaries.
 
 ```bash
-cat << EOF >> /etc/consul.d/consul-agent.hcl
+cat << EOF >> ${CONSUL_CONFIG_DIR}/consul-agent.hcl
+node_name = "${NODENAME}"
+server = false
 datacenter = "${DATACENTER}"
-data_dir = "${CONSUL_DATA_DIR}"
+data_dir = "${CONSUL_CONFIG_DIR}/data"
 domain = "${DOMAIN}"
 EOF
 ```
@@ -65,11 +77,11 @@ EOF
 Now, let's configure TLS for communication between the agent and the Consul server.
 
 ```bash
-cat << EOF >> /etc/consul.d/consul-agent.hcl
+cat << EOF >> ${CONSUL_CONFIG_DIR}/consul-agent.hcl
 
 tls {
    defaults {
-      ca_file = "${CONSUL_CONFIG_DIR}/certs/consul-agent-ca.pem"
+      ca_file = "${CONSUL_CERT_DIR}/consul-agent-ca.pem"
 
       verify_incoming = true
       verify_outgoing = true
@@ -88,7 +100,7 @@ EOF
 * Point the agent to the correct consul server:
 
 ```bash
-cat << EOF >> /etc/consul.d/consul-agent.hcl
+cat << EOF >> ${CONSUL_CONFIG_DIR}/consul-agent.hcl
 retry_join = ["consul-server"]
 EOF
 ```
@@ -96,5 +108,6 @@ EOF
 * Start the Consul Server:
 
 ```bash
+systemctl daemon-reload
 systemctl start consul
 ```
