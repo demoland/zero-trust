@@ -7,7 +7,7 @@
 #
 
 echo "Start Dataview and  Vault Agent"
-systemctl start vault-agent && \
+systemctl start vault-agent 
 systemctl start dataview
 
 exit 0
