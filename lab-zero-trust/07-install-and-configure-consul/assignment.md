@@ -75,7 +75,7 @@ cd ${CONSUL_CERT_DIR}
 Create the CA:
 
 ```bash
-consul tls ca create -domain ${DOMAIN} 
+consul tls ca create -domain ${DOMAIN}
 ```
 
 * Now, Create the certificates for the consul server (This would be done multiple times if you had multiple consul servers)

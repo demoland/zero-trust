@@ -36,7 +36,7 @@ Install Consul on App-Server
 
 We're going to start the Consul agent on the `app-server` node.  Then we'll register the dataview and postgres-db services with the Consul server.
 
-* Set Consul Environment variables: 
+* Set Consul Environment variables:
 
 ```bash
 export DOMAIN="opengov.co"

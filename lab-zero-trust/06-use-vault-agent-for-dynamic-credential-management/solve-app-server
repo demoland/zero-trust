@@ -6,7 +6,7 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "Start Dataview and  Vault Agent"
+echo "Start Dataview and Vault Agent"
 systemctl start vault-agent 
 systemctl start dataview
 
