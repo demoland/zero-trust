@@ -42,7 +42,7 @@ encrypt = "$CONSUL_GOSSIP_KEY"
 EOF
 ```
 
-### Write the Gossip key to the Vault cluster for the App server to use later. 
+### Write the Gossip key to the Vault cluster for the App server to use later.
 
 ```hcl
 vault kv put secret/consul/gossip key=$CONSUL_GOSSIP_KEY

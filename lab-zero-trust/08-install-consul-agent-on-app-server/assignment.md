@@ -46,7 +46,7 @@ vault kv get -format=json secret/consul/cert_file | jq -r .data.data.key > /etc/
 vault kv get -format=json secret/consul/key_file | jq -r .data.data.key > /etc/consul.d/certs/dc1-server-consul-0-key.pem
 ```
 
-First, let's define the gossip encryption file. 
+First, let's define the gossip encryption file.
 
 ```bash
 cat << EOF > /etc/consul.d/consul-agent.hcl
