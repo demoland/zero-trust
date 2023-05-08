@@ -152,6 +152,29 @@ ui_config {
 EOF
 ```
 
+* Enable TLS:
+
+```bash
+
+tls {
+   defaults {
+      ca_file = "${CONSUL_CONFIG_DIR}/certs/consul-agent-ca.pem"
+      cert_file = "${CONSUL_CONFIG_DIR}/certs/dc1-server-consul-0.pem"
+      key_file = "${CONSUL_CONFIG_DIR}/certs/dc1-server-consul-0-key.pem"
+
+      verify_incoming = true
+      verify_outgoing = true
+   }
+   internal_rpc {
+      verify_server_hostname = true
+   }
+}
+
+auto_encrypt {
+  allow_tls = true
+}
+```
+
 ### Start the Consul Server
 
 When consul starts, it will read all the files in the `/etc/consul.d` directory.

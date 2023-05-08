@@ -42,8 +42,6 @@ In the `app-server` terminal, create the Consul agent configuration file:
 
 ```bash
 vault kv get -format=json secret/consul/ca_file | jq -r .data.data.key > /etc/consul.d/certs/consul-agent-ca.pem
-vault kv get -format=json secret/consul/cert_file | jq -r .data.data.key > /etc/consul.d/certs/dc1-server-consul-0.pem
-vault kv get -format=json secret/consul/key_file | jq -r .data.data.key > /etc/consul.d/certs/dc1-server-consul-0-key.pem
 ```
 
 First, let's define the gossip encryption file.
@@ -57,10 +55,46 @@ EOF
 consul agent configuration cluster boundaries.
 
 ```bash
-cat << EOF > /etc/consul.d/consul-agent.hcl
+cat << EOF >> /etc/consul.d/consul-agent.hcl
 datacenter = "${DATACENTER}"
 data_dir = "${CONSUL_DATA_DIR}"
 domain = "${DOMAIN}"
 EOF
 ```
 
+Now, let's configure TLS for communication between the agent and the Consul server.
+
+```bash
+cat << EOF >> /etc/consul.d/consul-agent.hcl
+
+tls {
+   defaults {
+      ca_file = "${CONSUL_CONFIG_DIR}/certs/consul-agent-ca.pem"
+
+      verify_incoming = true
+      verify_outgoing = true
+   }
+   internal_rpc {
+      verify_server_hostname = true
+   }
+}
+
+auto_encrypt {
+  tls = true
+}
+EOF
+```
+
+* Point the agent to the correct consul server:
+
+```bash
+cat << EOF >> /etc/consul.d/consul-agent.hcl
+retry_join = ["consul-server"]
+EOF
+```
+
+* Start the Consul Server:
+
+```bash
+systemctl start consul
+```
