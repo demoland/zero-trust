@@ -48,12 +48,4 @@ else
   exit 1
 fi
 
-echo "Check: Is Consul ACL bootstrapped?"
-if [[ -f /etc/consul.d/consul-bootstrap-token.out ]]; then
-  echo "Consul ACL is bootstrapped"
-else
-  echo "Consul ACL is not bootstrapped"
-  exit 1
-fi
-
 exit 0

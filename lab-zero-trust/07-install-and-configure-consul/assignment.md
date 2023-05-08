@@ -44,7 +44,8 @@ EOF
 
 ### Configure Consul Encryption
 
-**Generate the TLS certificates for RPC encryption**
+* Generate the TLS certificates for RPC encryption
+
 Consul uses TLS to encrypt the RPC communication between consul servers. The RPC communication is for updating the service data between nodes.   Let's generate the TLS certificates.
 
 * We have to first, create the Certificate Authority (CA)
@@ -93,7 +94,7 @@ sudo chmod 640 /etc/consul.d/server.hcl
 ```bash
 cat << EOF >> /etc/consul.d/server.hcl
 server = true
-bootstrap_expect = 1
+# bootstrap_expect = 1
 EOF
 ```
 
@@ -156,7 +157,7 @@ systemctl start consul
 systemctl status consul
 ```
 
-### Bootstrap the ACL system
+<!-- ### Bootstrap the ACL system
 
 The last step before we can interact with the Consul server is to bootstrap the Consul ACLs.   This will create the initial token and policy that we will use to configure our consul server.
 
@@ -176,7 +177,7 @@ Local:            false
 Create Time:      2023-05-07 09:20:21.933822946 +0000 UTC
 Policies:
    00000000-0000-0000-0000-000000000001 - global-management
-```
+``` -->
 
 * Review the Consul UI.
 

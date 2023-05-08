@@ -65,7 +65,4 @@ EOF
 echo "Start the Consul Server"
 systemctl start consul
 
-echo "Bootstrap the Consul ACL"
-consul acl bootstrap > /etc/consul.d/consul-bootstrap-token.out
-
-exit 0
+# exit 0
