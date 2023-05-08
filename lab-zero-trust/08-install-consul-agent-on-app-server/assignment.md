@@ -1,5 +1,6 @@
 ---
 slug: install-consul-agent-on-app-server
+id: 5jeh0ylkhrnc
 type: challenge
 title: Install Consul agent on App-Server
 teaser: A short description of the challenge.
@@ -22,3 +23,5 @@ tabs:
 difficulty: basic
 timelimit: 600
 ---
+Install Consul on App-Server
+
