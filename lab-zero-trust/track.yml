@@ -1,15 +1,14 @@
 slug: zero-trust
 id: iyskvrx8g8gf
-title: IN MAINTENANCE - BUILDING - Zero Trust Application Security
+title: Zero Trust Application Security with Consul and Vault
 teaser: Unlock the full potential of modern security practices in application development
 description: |2-
 
   ## Key Takeaways:
 
-  * Dive deep into dynamic credentials and learn how to enhance security with HashiCorp Vault's Encryption as a Service.
+  * Learn how to implement a zero-trust approach to application development.
+  * Dive deep into Vault, auth methods,  dynamic credentials and learn how to enhance security with HashiCorp Vault.
   * Explore Consul, the powerful service mesh that enables encrypted service-to-service communication, promoting a secure and resilient architecture.
-  * Unleash the power of Boundary to implement least-privilege access to applications, ensuring that every user and service has the right level of access.
-  * Master Boundary secrets injection with Vault, enabling you to protect sensitive information and maintain robust security throughout the application lifecycle.
 
   ## Why You Should Attend:
   This workshop is designed for developers, architects, and security professionals who want to stay ahead of the curve by adopting a zero-trust approach to application development.
@@ -20,17 +19,16 @@ description: |2-
 icon: https://storage.googleapis.com/instruqt-frontend/img/tracks/default.png
 tags:
 - Vault
-- Boundary
 - Consul
 - Zero Trust
 owner: hashicorp
 developers:
 - daniel.fedick@hashicorp.com
-maintenance: true
 show_timer: true
 skipping_enabled: true
+timelimit: 7200
 lab_config:
   overlay: false
   width: 33
   position: right
-checksum: "10067811747279517163"
+checksum: "9409086736059801800"

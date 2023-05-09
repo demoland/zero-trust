@@ -26,7 +26,7 @@ tabs:
   hostname: consul-server
   path: /etc/consul.d
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 
  In this challenge we will configure a consul server as the service registry for our application.

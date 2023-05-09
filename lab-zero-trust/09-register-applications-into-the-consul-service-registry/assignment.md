@@ -28,10 +28,27 @@ tabs:
   hostname: app-server
   path: /etc/consul.ds
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 
 Let's start by registering the dataview service with the Consul server.
+
+```bash
+export DOMAIN="opengov.co"
+export NODENAME="app-server"
+export DATACENTER="dc1"
+export CONSUL_CONFIG_DIR="/etc/consul.d"
+export CONSUL_CERT_DIR="${CONSUL_CONFIG_DIR}/certs"
+```
+
+Before we define the service, run the following commands:
+
+```bash
+consul members
+consul catalog services
+```
+
+* Let's define the dataview service.
 
 ```bash
 cat << EOF > ${CONSUL_CONFIG_DIR}/dataview.hcl
@@ -50,9 +67,10 @@ service {
         ]
       }
     }
+  }
   check {
     name     = "dataview"
-    type     = "tcp"
+    tcp      = "app-server:8888"
     interval = "10s"
     timeout  = "1s"
   }
@@ -60,7 +78,28 @@ service {
 EOF
 ```
 
-Now, let's register the postgres-db service with the Consul server.
+* Change permissions to the consul user.
+
+```bash
+chown -Rf consul:consul dataview.hcl
+```
+
+Reload the consul service.
+
+```bash
+consul reload
+```
+
+Now run that consul members and consul catalog services commands again.
+
+```bash
+consul members
+consul catalog services
+```
+
+* Let's look at the Consul UI and see the differences.  Click ok the `Services tab.`
+Change permissions on the dataview file.
+You should see that the consul service catalog has two new services.  The problem is that it looks like the service is unhealthy.  That's because the postgres-db upstream service doesn't exist yet.  Let's fix that.
 
 ```bash
 cat << EOF > ${CONSUL_CONFIG_DIR}/postgres-db.hcl
@@ -69,19 +108,11 @@ service {
   id = "postgres-db"
   port = 5432
   connect {
-    sidecar_service {
-      proxy {
-        upstreams = [
-          {
-            destination_name = "postgres-db"
-            local_bind_port  = 5432
-          }
-        ]
-      }
-    }
+    sidecar_service {}
+  }
   check {
     name     = "postgres-db"
-    type     = "tcp"
+    tcp      = "app-server:5432"
     interval = "10s"
     timeout  = "1s"
   }
@@ -89,10 +120,39 @@ service {
 EOF
 ```
 
-Now, let's restart the Consul agent.
+* Change permissions to the postgres service file.
 
 ```bash
-systemctl restart consul
+chown -Rf consul:consul ${CONSUL_CONFIG_DIR}/postgres-db.hcl
 ```
 
-Now, let's check the status of the Consul agent in the `Consul UI` tab.
+* Run the consul validate script to ensure that all the consul configuration files are valid.
+
+```bash
+consul validate .
+```
+
+* Reload Consul:
+
+```bash
+consul reload
+```
+
+* Run the Consul catalog services commands.
+Now you should see the new postgres applications.
+
+```bash
+consul catalog services
+```
+
+* Now, let's check the status of the Consul agent in the `Consul UI` tab.
+You should see that the dataview and postgres-db services are still not healthy.
+
+We need to start the consul envoy sidecars:
+
+```bash
+systemctl start consul-dataview-sidecar
+systemctl start consul-postgres-sidecar
+```
+
+* Check the `Consul UI` tab one more time. You should now see 3 healthy services.

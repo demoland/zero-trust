@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform setup the challenge.
 #
@@ -11,5 +11,45 @@ export DOMAIN="opengov.co"
 export NODENAME="app-server"
 export DATACENTER="dc1"
 export CONSUL_CONFIG_DIR="/etc/consul.d"
+
+echo "Create Consul postgres sidecar"
+cat << EOF > /etc/systemd/system/consul-postgres-sidecar.service
+[Unit]
+Description=Consul Connect Sidecar Proxy for PostgreSQL
+After=network.target
+
+[Service]
+Environment="CONSUL_CACERT=/etc/consul.d/certs/opengov.co-agent-ca.pem"
+ExecStart=/usr/local/bin/consul connect proxy -sidecar-for postgres-db
+ExecReload=/bin/kill -HUP \$MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+echo "Create Consul dataview sidecar"
+
+cat << EOF > /etc/systemd/system/consul-dataview-sidecar.service
+[Unit]
+Description=Consul Connect Sidecar Proxy for DataView
+After=network.target
+
+[Service]
+Environment="CONSUL_CACERT=/etc/consul.d/certs/opengov.co-agent-ca.pem"
+ExecStart=/usr/local/bin/consul connect proxy -sidecar-for dataview
+ExecReload=/bin/kill -HUP \$MAINPID
+KillMode=process
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo systemctl daemon-reload
+
 
 exit 0

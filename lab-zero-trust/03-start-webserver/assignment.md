@@ -18,7 +18,7 @@ tabs:
   type: terminal
   hostname: app-server
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 
 Let's start the Data Viewer web server.

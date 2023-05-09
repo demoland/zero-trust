@@ -26,7 +26,7 @@ tabs:
   hostname: app-server
   path: /root/dataview
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 In this exercise we are replacing the `dataview.yml` static credentials with a new file called `dataview-dynamic.yml`.
 

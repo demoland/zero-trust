@@ -30,7 +30,6 @@ containers:
     VAULT_TOKEN: root
     CONSUL_DATA_DIR: /etc/consul.d/data
     CONSUL_CONFIG_DIR: /etc/consul.d
-
 aws_accounts:
 - name: awsaccount
   managed_policies: ["arn:aws:iam::aws:policy/AdministratorAccess"]

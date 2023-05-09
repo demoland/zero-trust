@@ -35,7 +35,7 @@ tabs:
   type: terminal
   hostname: app-server
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 
 For the purposes of this lab, we've setup a Postgres database and a user/password.

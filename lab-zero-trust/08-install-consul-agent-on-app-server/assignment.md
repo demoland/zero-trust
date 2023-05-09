@@ -30,7 +30,7 @@ tabs:
   hostname: app-server
   path: /etc/consul.d
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 Install Consul on App-Server
 

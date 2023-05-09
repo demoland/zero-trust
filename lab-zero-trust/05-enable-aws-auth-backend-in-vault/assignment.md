@@ -25,7 +25,7 @@ tabs:
   hostname: vault-server
   path: /root/dataview
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 First thing we want to do is enable the AWS auth backend in Vault. This will allow us to authenticate and authorize AWS IAM users and roles to access secrets in Vault. When we enable the AWS auth backend, we can create roles that map to AWS IAM principals, such as IAM users and roles. Vault then uses the AWS access key ID and secret access key associated with the IAM principal to authenticate and authorize access to secrets.
 

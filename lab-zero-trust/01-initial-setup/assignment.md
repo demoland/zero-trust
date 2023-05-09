@@ -24,7 +24,7 @@ tabs:
   path: /ui/
   port: 8200
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 
 ## This is the first line

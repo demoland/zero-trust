@@ -20,7 +20,7 @@ tabs:
   hostname: vault-server
   port: 8200
 difficulty: basic
-timelimit: 600
+timelimit: 800
 ---
 
 In the last challenge, we started the Data View web server.  The Data View web server is a Go application that is already installed on the app-server. The web server is located at `/usr/local/bin/dataview`.  The `/etc/dataview.yml` file contains the configuration for the web server.  The dataview.yml file had static credentials in the file that allowed the web server to connect to the postgres database.
