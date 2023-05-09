@@ -38,11 +38,14 @@ sudo touch ${CONSUL_CONFIG_DIR}/server.hcl
 sudo chown --recursive consul:consul ${CONSUL_CONFIG_DIR}
 sudo chmod 640 ${CONSUL_CONFIG_DIR}/server.hcl
 
-cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
+cat << EOF > ${CONSUL_CONFIG_DIR}/server.hcl
+node_name = "consul-server"
 server = true
-domain = "${DOMAIN}"
 bind_addr = "0.0.0.0"
 client_addr = "0.0.0.0"
+domain = "${DOMAIN}"
+datacenter = "${DATACENTER}"
+data_dir = "${CONSUL_CONFIG_DIR}/data"
 
 connect {
   enabled = true
@@ -85,4 +88,4 @@ EOF
 echo "Start the Consul Server"
 systemctl start consul
 
-# exit 0
+exit 0

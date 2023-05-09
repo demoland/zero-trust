@@ -112,21 +112,29 @@ sudo chown --recursive consul:consul ${CONSUL_CERT_DIR}
 sudo chmod 640 ${CONSUL_CONFIG_DIR}/server.hcl
 ```
 
-* Enable Consul Server:
+* Set Consul Environment variables:
 
 ```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
-server = true
-EOF
+export DOMAIN="opengov.co"
+export NODENAME="app-server"
+export DATACENTER="dc1"
+export CONSUL_CONFIG_DIR="/etc/consul.d"
+export CONSUL_CERT_DIR="${CONSUL_CONFIG_DIR}/certs"
 ```
 
-* Setup Bind and client IP address to listen on the main IP interface:
+* Setup Add Connection information,  enable server mode, and set data directory:
 
 ```bash
 cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
+node_name = "consul-server"
+server = true
 bind_addr = "0.0.0.0"
 client_addr = "0.0.0.0"
 domain = "${DOMAIN}"
+datacenter = "${DATACENTER}"
+data_dir = "${CONSUL_CONFIG_DIR}/data"
+bootstrap_expect = 1
+
 EOF
 ```
 
@@ -162,6 +170,7 @@ cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
 ui_config {
   enabled = true
 }
+
 EOF
 ```
 

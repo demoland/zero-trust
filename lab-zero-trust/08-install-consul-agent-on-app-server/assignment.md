@@ -51,7 +51,7 @@ export CONSUL_CERT_DIR="${CONSUL_CONFIG_DIR}/certs"
 In the `app-server` terminal, create the Consul agent configuration file:
 
 ```bash
-vault kv get -format=json secret/consul/ca_file | jq -r .data.data.key > ${CONSUL_CERT_DIR}/consul-agent-ca.pem
+vault kv get -format=json secret/consul/ca_file | jq -r .data.data.key > ${CONSUL_CERT_DIR}/${DOMAIN}-agent-ca.pem
 ```
 
 First, let's define the gossip encryption file.
@@ -91,9 +91,10 @@ tls {
    }
 }
 
-auto_encrypt {
+auto_encrypt = {
   tls = true
 }
+
 EOF
 ```
 

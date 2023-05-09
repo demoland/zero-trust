@@ -22,10 +22,8 @@ Description="HashiCorp Consul - A service mesh solution"
 Documentation=https://www.consul.io/
 Requires=network-online.target
 After=network-online.target
-ConditionFileNotEmpty=${CONSUL_CONFIG_DIR}/server.hcl
 
 [Service]
-EnvironmentFile=-${CONSUL_CONFIG_DIR}/consul.env
 User=consul
 Group=consul
 ExecStart=/usr/local/bin/consul agent -config-dir=${CONSUL_CONFIG_DIR}
@@ -39,8 +37,6 @@ LimitNOFILE=65536
 WantedBy=multi-user.target
 EOF
 
-touch ${CONSUL_CONFIG_DIR}/consul.env
 systemctl daemon-reload
 
-EOF
 exit 0

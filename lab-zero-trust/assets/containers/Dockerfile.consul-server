@@ -10,7 +10,6 @@ ENV DATACENTER="dc1"
 ENV CONSUL_DATA_DIR="/etc/consul.d/data"
 ENV CONSUL_CONFIG_DIR="/etc/consul.d"
 ENV CONSUL_LOG_DIR="/etc/consul.d/logs"
-ENV CONSUL_LOG_FILE="/etc/consul.d/logs/consul-server.log"
 
 ENV VAULT_VERSION=1.13.0
 WORKDIR /tmp
@@ -26,10 +25,7 @@ RUN unzip consul_${CONSUL_VERSION}_linux_amd64.zip
 RUN mv consul /usr/local/bin/
 RUN chmod -R 755 /usr/local/bin/consul
 
-COPY lab-zero-trust/assets/containers/consul.service /tmp/consul.service
-
 RUN mkdir -p $CONSUL_DATA_DIR $CONSUL_CONFIG_DIR $CONSUL_LOG_DIR
-RUN touch $CONSUL_LOG_FILE
 
 RUN sudo useradd consul
 RUN sudo usermod -aG consul consul
