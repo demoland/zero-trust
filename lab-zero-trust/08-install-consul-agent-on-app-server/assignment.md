@@ -62,27 +62,25 @@ encrypt = "$(vault kv get -format=json secret/consul/gossip | jq -r .data.data.k
 EOF
 ```
 
-consul agent configuration cluster boundaries.
+Next, let's define the Consul agent configuration file.
 
 ```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/consul-agent.hcl
+echo "Create Consul-agent configuration"
+cat << EOF > ${CONSUL_CONFIG_DIR}/consul-agent.hcl
+
 node_name = "${NODENAME}"
 server = false
 datacenter = "${DATACENTER}"
 data_dir = "${CONSUL_CONFIG_DIR}/data"
 domain = "${DOMAIN}"
-EOF
-```
 
-Now, let's configure TLS for communication between the agent and the Consul server.
-
-```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/consul-agent.hcl
+log_level = "INFO"
+log_file = "${CONSUL_CONFIG_DIR}/logs/consul.log"
+retry_join = ["consul-server"]
 
 tls {
    defaults {
-      ca_file = "${CONSUL_CERT_DIR}/consul-agent-ca.pem"
-
+      ca_file = "${CONSUL_CERT_DIR}/${DOMAIN}-agent-ca.pem"
       verify_incoming = true
       verify_outgoing = true
    }
@@ -98,17 +96,9 @@ auto_encrypt = {
 EOF
 ```
 
-* Point the agent to the correct consul server:
-
-```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/consul-agent.hcl
-retry_join = ["consul-server"]
-EOF
-```
-
 * Start the Consul Server:
 
 ```bash
-systemctl daemon-reload
+chown -R consul:consul ${CONSUL_CONFIG_DIR}
 systemctl start consul
 ```

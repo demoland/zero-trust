@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This script runs when the platform check the challenge.
 #
@@ -6,6 +6,23 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
-echo "This is the check script"
+
+echo "Check: Is Consul Service running?"
+CONSUL_STAT=$(systemctl status consul  |grep Active: |awk '{print $2}')
+if [[ $CONSUL_STAT == "active" ]]; then
+  echo "Consul Service is running"
+else
+  echo "Consul Service is not running"
+  exit 1
+fi
+
+echo "Is Node in Consul Members?"
+CONSUL_MEMBERS=$(consul members | grep app-server | grep alive | awk '{print $3}')
+if [[ $CONSUL_MEMBERS == "alive" ]]; then
+  echo "Node is in Consul Members"
+else
+  echo "Node is not in Consul Members"
+  exit 1
+fi
 
 exit 0

@@ -16,10 +16,6 @@ mkdir -p ${CONSUL_CONFIG_DIR}certs ${CONSUL_CONFIG_DIR}/logs ${CONSUL_CONFIG_DIR
 set-workdir ${CONSUL_CONFIG_DIR}
 
 
-
-
-
-
 echo "Create Gossip file"
 cat << EOF > ${CONSUL_CONFIG_DIR}/consul-gossip-encryption.hcl
 encrypt = "$(vault kv get -format=json secret/consul/gossip | jq -r .data.data.key)"
@@ -55,14 +51,7 @@ auto_encrypt = {
 
 EOF
 
-systemctl daemon-reload
-
-# echo "Create CONSUL Config file"
-# cat << EOF > ${CONSUL_CONFIG_DIR}/consul.env
-# CONSUL_CACERT=${CONSUL_CERT_DIR}/${DOMAIN}-agent-ca.pem
-# EOF
-
-systemctl daemon-reload
+chown -R consul:consul ${CONSUL_CONFIG_DIR}
 systemctl start consul
 
 exit 0

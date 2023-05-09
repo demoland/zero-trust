@@ -46,6 +46,7 @@ client_addr = "0.0.0.0"
 domain = "${DOMAIN}"
 datacenter = "${DATACENTER}"
 data_dir = "${CONSUL_CONFIG_DIR}/data"
+bootstrap_expect = 1
 
 connect {
   enabled = true

@@ -36,6 +36,7 @@ timelimit: 600
 Gossip is used to maintain a cluster membership list, to propagate health checks, and to disseminate configuration changes.  This data is encrypted using a gossip encryption key.  Let's create the gossip encryption key and generate the `consul-gossip-encryption.hcl` file.
 
 Set environment variables to use in the rest of the workflow:
+
 ```bash
 export DOMAIN="opengov.co"
 export NODENAME="consul-server"
@@ -112,20 +113,10 @@ sudo chown --recursive consul:consul ${CONSUL_CERT_DIR}
 sudo chmod 640 ${CONSUL_CONFIG_DIR}/server.hcl
 ```
 
-* Set Consul Environment variables:
+* Create the Consul Server configuration file:
 
 ```bash
-export DOMAIN="opengov.co"
-export NODENAME="app-server"
-export DATACENTER="dc1"
-export CONSUL_CONFIG_DIR="/etc/consul.d"
-export CONSUL_CERT_DIR="${CONSUL_CONFIG_DIR}/certs"
-```
-
-* Setup Add Connection information,  enable server mode, and set data directory:
-
-```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
+cat << EOF > ${CONSUL_CONFIG_DIR}/server.hcl
 node_name = "consul-server"
 server = true
 bind_addr = "0.0.0.0"
@@ -135,50 +126,6 @@ datacenter = "${DATACENTER}"
 data_dir = "${CONSUL_CONFIG_DIR}/data"
 bootstrap_expect = 1
 
-EOF
-```
-
-* Enable Consul Logs:
-Consul logs can be set in the configuration file as follows:
-
-```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
-log_level = "INFO"
-log_file = "${CONSUL_CONFIG_DIR}/logs/consul.log"
-EOF
-
-```
-
-* Enable Consul Connect:
-Consul connect uses Envoy as the reverse proxy between services.  Consul connect also provides service segmentation, which allows us to control which services can communicate with each other.  This is a critical component of our Zero Trust architecture. This communication happens via GRPC.  We need to enable GRPC and set the port to 8502.
-
-```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
-
-connect {
-  enabled = true
-}
-
-EOF
-```
-
-* Enable the Consul UI. This will allow us to view the Consul UI in the browser.
-
-```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
-
-ui_config {
-  enabled = true
-}
-
-EOF
-```
-
-* Enable Consul Connect:
-enabling service mesh for your Consul cluster. By default, service is disabled. Enabling service mesh requires changing the configuration of only your Consul servers (not client agents).
-
-```bash
-cat << EOF >> /etc/consul.d/server.hcl
 connect {
   enabled = true
 }
@@ -190,20 +137,12 @@ addresses {
 ports {
   grpc_tls  = 8503
 }
-EOF
-```
-
-* Enable TLS:
-
-```bash
-cat << EOF >> ${CONSUL_CONFIG_DIR}/server.hcl
 
 tls {
    defaults {
-      ca_file = "${CONSUL_CERT_DIR}/opengov.co-agent-ca.pem"
-      cert_file = "${CONSUL_CERT_DIR}/dc1-server-opengov.co-0.pem"
-      key_file = "${CONSUL_CERT_DIR}/dc1-server-opengov.co-0-key.pem"
-
+      ca_file = "${CONSUL_CERT_DIR}/${DOMAIN}-agent-ca.pem"
+      cert_file = "${CONSUL_CERT_DIR}/${DATACENTER}-server-${DOMAIN}-0.pem"
+      key_file = "${CONSUL_CERT_DIR}/${DATACENTER}-server-${DOMAIN}-0-key.pem"
       verify_incoming = true
       verify_outgoing = true
    }
@@ -214,6 +153,10 @@ tls {
 
 auto_encrypt {
   allow_tls = true
+}
+
+ui_config {
+  enabled = true
 }
 
 EOF
@@ -229,8 +172,7 @@ Let's review the files in this directory:
 * Now, let's start the consul server:
 
 ```bash
-cp /tmp/consul.service /etc/systemd/system/consul.service
-systemctl daemon-reload
+chown -R consul:consul ${CONSUL_CONFIG_DIR}
 systemctl start consul
 ```
 
