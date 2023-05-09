@@ -20,8 +20,7 @@ if [[ ! -f /usr/local/bin/dataview ]]; then
 fi
 
 echo "Check if dataview is running and getting 200 response"
-
-stat=$(curl -s -o /dev/null -w "%{http_code}" http:/app-server:8888)
+stat=$(curl -s -o /dev/null -w "%{http_code}" http://app-server:8888)
 if [[ $stat -ne 200 ]]; then
     echo "Dataview server is not running"
     exit 1
