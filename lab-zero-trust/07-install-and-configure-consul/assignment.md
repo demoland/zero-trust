@@ -108,9 +108,9 @@ vault kv put secret/consul/key_file key=@${CONSUL_CERT_DIR}/${DATACENTER}-server
 * Create the consul server configuration file
 
 ```bash
-sudo touch ${CONSUL_CONFIG_DIR}/server.hcl
-sudo chown --recursive consul:consul ${CONSUL_CERT_DIR}
-sudo chmod 640 ${CONSUL_CONFIG_DIR}/server.hcl
+touch ${CONSUL_CONFIG_DIR}/server.hcl
+chown --recursive consul:consul ${CONSUL_CERT_DIR}
+chmod 640 ${CONSUL_CONFIG_DIR}/server.hcl
 ```
 
 * Create the Consul Server configuration file:

@@ -1,0 +1,64 @@
+#!/bin/sh
+#
+# This script runs when the platform solve the challenge.
+#
+# The platform determines if the script was successful using the exit code of this
+# script. If the exit code is not 0, the script fails. 
+#
+
+echo "Start by registering the dataview service with the Consul server."
+```bash
+cat << EOF > ${CONSUL_CONFIG_DIR}/dataview.hcl
+service {
+  name = "dataview"
+  id = "dataview"
+  port = 8888
+  connect {
+    sidecar_service {
+      proxy {
+        upstreams = [
+          {
+            destination_name = "postgres-db"
+            local_bind_port  = 5432
+          }
+        ]
+      }
+    }
+  check {
+    name     = "dataview"
+    type     = "tcp"
+    interval = "10s"
+    timeout  = "1s"
+  }
+}
+```
+
+echo "Now, register the postgres-db service with the Consul server."
+
+```bash
+cat << EOF > ${CONSUL_CONFIG_DIR}/postgres-db.hcl
+service {
+  name = "postgres-db"
+  id = "postgres-db"
+  port = 5432
+  connect {
+    sidecar_service {
+      proxy {
+        upstreams = [
+          {
+            destination_name = "postgres-db"
+            local_bind_port  = 5432
+          }
+        ]
+      }
+    }
+  check {
+    name     = "postgres-db"
+    type     = "tcp"
+    interval = "10s"
+    timeout  = "1s"
+  }
+}
+```
+
+exit 0

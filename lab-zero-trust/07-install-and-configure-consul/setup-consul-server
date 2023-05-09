@@ -39,5 +39,6 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
+systemctl stop consul.service
 
 exit 0

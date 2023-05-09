@@ -6,6 +6,9 @@
 # script. If the exit code is not 0, the script fails. 
 #
 
+
+# Write the Gossip key to the Vault cluster for the App server to use later
+
 echo "Enable Gossip Encryption"
 CONSUL_GOSSIP_KEY=$(consul keygen)
 export DOMAIN="opengov.co"
@@ -34,9 +37,9 @@ vault kv put secret/consul/cert_file key=@${CONSUL_CERT_DIR}/${DATACENTER}-serve
 vault kv put secret/consul/key_file key=@${CONSUL_CERT_DIR}/${DATACENTER}-server-${DOMAIN}-0-key.pem
 
 echo "Create Consul server config"
-sudo touch ${CONSUL_CONFIG_DIR}/server.hcl
-sudo chown --recursive consul:consul ${CONSUL_CONFIG_DIR}
-sudo chmod 640 ${CONSUL_CONFIG_DIR}/server.hcl
+touch ${CONSUL_CONFIG_DIR}/server.hcl
+chown --recursive consul:consul ${CONSUL_CONFIG_DIR}
+chmod 640 ${CONSUL_CONFIG_DIR}/server.hcl
 
 cat << EOF > ${CONSUL_CONFIG_DIR}/server.hcl
 node_name = "consul-server"
