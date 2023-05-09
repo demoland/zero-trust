@@ -12,10 +12,11 @@ export DATACENTER="dc1"
 export CONSUL_CONFIG_DIR="/etc/consul.d"
 export CONSUL_CERT_DIR="/etc/consul.d/certs"
 
-mkdir -p ${CONSUL_CONFIG_DIR}certs ${CONSUL_CONFIG_DIR}/logs ${CONSUL_CONFIG_DIR}/data
+mkdir -p ${CONSUL_CONFIG_DIR}/certs ${CONSUL_CONFIG_DIR}/logs ${CONSUL_CONFIG_DIR}/data
 set-workdir ${CONSUL_CONFIG_DIR}
 
 echo "Create Consul Server Startup Script"
+
 cat << EOF > /etc/systemd/system/consul.service
 [Unit]
 Description="HashiCorp Consul - A service mesh solution"
@@ -27,7 +28,7 @@ After=network-online.target
 User=consul
 Group=consul
 ExecStart=/usr/local/bin/consul agent -config-dir=${CONSUL_CONFIG_DIR}
-ExecReload=/bin/kill --signal HUP $MAINPID
+ExecReload=/bin/kill --signal HUP \$MAINPID
 KillMode=process
 KillSignal=SIGTERM
 Restart=on-failure

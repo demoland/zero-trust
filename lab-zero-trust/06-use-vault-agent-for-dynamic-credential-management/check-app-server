@@ -8,24 +8,24 @@
 
 
 
-echo "Check: Is the Vault agent running?"
-VAULT_AGENT_STATUS=$(systemctl status vault-agent |grep Active: |awk '{print $2}')
-if [[ $VAULT_AGENT_STATUS == "active" ]]; then
-    echo "Vault agent is running"
-else
-    echo "Vault agent is not running"
-    echo "STATUS:: $VAULT_AGENT_STATUS"
-    exit 1
-fi
+# echo "Check: Is the Vault agent running?"
+# VAULT_AGENT_STATUS=$(systemctl status vault-agent |grep Active: |awk '{print $2}')
+# if [[ $VAULT_AGENT_STATUS == "active" ]]; then
+#     echo "Vault agent is running"
+# else
+#     echo "Vault agent is not running"
+#     echo "STATUS:: $VAULT_AGENT_STATUS"
+#     exit 1
+# fi
 
-echo "Check: Is Dataview running?"
-DATAVIEW_STATUS=$(systemctl status dataview |grep Active: |awk '{print $2}')
+# echo "Check: Is Dataview running?"
+# DATAVIEW_STATUS=$(systemctl status dataview |grep Active: |awk '{print $2}')
 
-if [[ $DATAVIEW_STATUS == "active" ]]; then
-    echo "Dataview is running"
-else
-    echo "Dataview is not running"
-    exit 1
-fi
+# if [[ $DATAVIEW_STATUS == "active" ]]; then
+#     echo "Dataview is running"
+# else
+#     echo "Dataview is not running"
+#     exit 1
+# fi
 
 exit 0

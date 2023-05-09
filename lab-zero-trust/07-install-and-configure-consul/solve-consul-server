@@ -84,8 +84,6 @@ ui_config {
 
 EOF
 
-
-
 echo "Start the Consul Server"
 systemctl start consul
 
