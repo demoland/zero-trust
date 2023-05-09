@@ -3,7 +3,7 @@ FROM ubuntu:22.04
 
 # Install required packages
 RUN apt-get update
-RUN apt-get install -y unzip curl wget jq inetutils-ping git
+RUN apt-get install -y unzip curl wget jq inetutils-ping git systemctl
 
 # Install Vault
 ENV DATACENTER="dc1"
@@ -29,6 +29,3 @@ RUN mkdir -p $CONSUL_DATA_DIR $CONSUL_CONFIG_DIR $CONSUL_LOG_DIR
 
 RUN useradd consul
 RUN usermod -aG consul consul
-
-# Install systemd and journalctl
-RUN apt-get install -y systemd systemd-journal-remote
