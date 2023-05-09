@@ -1,13 +1,46 @@
-#!/bin/bash
+#!/bin/sh
 #
-# This script runs when the platform solve the challenge.
+# This script runs when the platform setup the challenge.
 #
 # The platform determines if the script was successful using the exit code of this
 # script. If the exit code is not 0, the script fails. 
 #
 
+
 export DOMAIN="opengov.co"
-export NODENAME="app-server"
+export NODENAME="vault-server"
+export DATACENTER="dc1"
+export CONSUL_CONFIG_DIR="/etc/consul.d"
+
+mkdir -p ${CONSUL_CONFIG_DIR}/certs ${CONSUL_CONFIG_DIR}/logs ${CONSUL_CONFIG_DIR}/data
+set-workdir ${CONSUL_CONFIG_DIR}
+
+echo "Create Consul Server Startup Script"
+cat << EOF > /etc/systemd/system/consul.service
+[Unit]
+Description="HashiCorp Consul - A service mesh solution"
+Documentation=https://www.consul.io/
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+User=consul
+Group=consul
+ExecStart=/usr/local/bin/consul agent -config-dir=${CONSUL_CONFIG_DIR}
+ExecReload=/bin/kill --signal HUP \$MAINPID
+KillMode=process
+KillSignal=SIGTERM
+Restart=on-failure
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+systemctl daemon-reload
+
+export DOMAIN="opengov.co"
+export NODENAME="vault-server"
 export DATACENTER="dc1"
 export CONSUL_CONFIG_DIR="/etc/consul.d"
 export CONSUL_CERT_DIR="${CONSUL_CONFIG_DIR}/certs"
@@ -53,6 +86,7 @@ auto_encrypt = {
 EOF
 
 chown -R consul:consul ${CONSUL_CONFIG_DIR}
+systemctl stop consul
 systemctl start consul
 
 exit 0

@@ -22,7 +22,6 @@ Description="HashiCorp Consul - A service mesh solution"
 Documentation=https://www.consul.io/
 Requires=network-online.target
 After=network-online.target
-ConditionFileNotEmpty=${CONSUL_CONFIG_DIR}/server.hcl
 
 [Service]
 User=consul
@@ -39,5 +38,6 @@ WantedBy=multi-user.target
 EOF
 
 systemctl daemon-reload
+systemctl stop consul
 
 exit 0

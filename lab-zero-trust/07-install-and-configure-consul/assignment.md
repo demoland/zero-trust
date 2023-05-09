@@ -125,6 +125,7 @@ domain = "${DOMAIN}"
 datacenter = "${DATACENTER}"
 data_dir = "${CONSUL_CONFIG_DIR}/data"
 bootstrap_expect = 1
+pid_file = "${CONSUL_CONFIG_DIR}/consul.pid"
 
 connect {
   enabled = true

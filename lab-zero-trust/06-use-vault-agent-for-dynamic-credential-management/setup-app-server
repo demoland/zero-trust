@@ -82,9 +82,11 @@ After=network.target vault-agent.service
 User=root
 Group=root
 ExecStart=/usr/local/bin/dataview -config-file /root/dataview/dataview-dynamic.yml
+ExecReload=/bin/kill --signal HUP \$MAINPID
+KillMode=process
+KillSignal=SIGTERM
 Restart=on-failure
-RestartSec=5
-StartLimitInterval=0
+LStartLimitInterval=0
 
 [Install]
 WantedBy=multi-user.target

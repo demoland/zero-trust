@@ -73,6 +73,7 @@ server = false
 datacenter = "${DATACENTER}"
 data_dir = "${CONSUL_CONFIG_DIR}/data"
 domain = "${DOMAIN}"
+pid_file = "${CONSUL_CONFIG_DIR}/consul.pid"
 
 log_level = "INFO"
 log_file = "${CONSUL_CONFIG_DIR}/logs/consul.log"
@@ -96,7 +97,7 @@ auto_encrypt = {
 EOF
 ```
 
-* Start the Consul Server:
+* Start the Consul Server on the App Server:
 
 ```bash
 chown -R consul:consul ${CONSUL_CONFIG_DIR}
