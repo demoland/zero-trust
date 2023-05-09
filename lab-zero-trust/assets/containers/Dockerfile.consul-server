@@ -1,5 +1,5 @@
 # 
-FROM ubuntu:20.04
+FROM ubuntu:20.10
 
 # Install required packages
 RUN apt-get update
@@ -31,4 +31,4 @@ RUN useradd consul
 RUN usermod -aG consul consul
 
 # Install systemd and journalctl
-RUN apt-get install -y systemd systemd-journal
+RUN apt-get install -y systemd 
