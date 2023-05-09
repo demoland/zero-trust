@@ -21,4 +21,3 @@ RUN wget https://releases.hashicorp.com/consul/${CONSUL_VERSION}/consul_${CONSUL
 RUN unzip consul_${CONSUL_VERSION}_linux_amd64.zip
 RUN mv consul /usr/local/bin/
 RUN chmod -R 755 /usr/local/bin/consul
-COPY lab-zero-trust/assets/containers/consul.service /etc/systemd/system/consul.service
