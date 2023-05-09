@@ -31,4 +31,4 @@ RUN useradd consul
 RUN usermod -aG consul consul
 
 # Install systemd and journalctl
-RUN apt-get install -y systemd 
+RUN apt-get install -y systemd systemd-journal-remote

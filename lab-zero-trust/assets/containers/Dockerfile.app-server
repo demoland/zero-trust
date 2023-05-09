@@ -64,3 +64,7 @@ RUN chmod -R 755 /usr/local/bin/consul
 
 RUN sudo useradd consul
 RUN sudo usermod -aG consul consul
+
+
+# Install systemd and journalctl
+RUN apt-get install -y systemd systemd-journal-remote
