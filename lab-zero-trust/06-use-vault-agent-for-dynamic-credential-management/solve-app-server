@@ -11,5 +11,6 @@ systemctl start vault-agent
 
 sleep 2
 systemctl start dataview
+sleep 2
 
 exit 0

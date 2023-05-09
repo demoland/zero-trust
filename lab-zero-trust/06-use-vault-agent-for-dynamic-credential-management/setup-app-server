@@ -94,5 +94,4 @@ systemctl daemon-reload
 systemctl stop dataview
 systemctl stop vault-agent
 
-
 exit 0
